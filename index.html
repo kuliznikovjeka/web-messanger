@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Web-Messanger</title>
+	<link rel="stylesheet" href="./css/style.min.css">
+</head>
+
+<body>
+	<!--верстаем макеты 2.0 и 2.3 - попап  -->
+	<div class="wrapper">
+		<main class="main">
+			<section class="communication">
+				<div class="communication__container">
+					<div class="communication__top-actions top-actions-communication">
+						<button class="top-actions-communication__btn-settings btn-action"
+							data-path="modal-one">Настройки</button>
+						<button class="top-actions-communication__btn-exit btn-action">Выйти</button>
+					</div>
+					<div class="communication__messages-area area-messages">
+						<ul class="area-messages__list">
+							<li class="area-messages__message user-message">
+								<div class="user-message__wrapper">
+									<span class="current-user">Я:</span> Добрый день!
+									<div class="area-messages__send-time">18:45</div>
+								</div>
+							</li>
+							<li class="area-messages__message other-message">
+								<div class="user-message__wrapper">
+									<span class="other-user">Собеседник:</span> Добрый день!
+									<div class="area-messages__send-time">18:45</div>
+								</div>
+							</li>
+							<li class="area-messages__message other-message">
+								<div class="user-message__wrapper">
+									<span class="other-user">Собеседник:</span> А это второе и, кажется, оно очень длинное, чтобы
+									поместиться на одной строке
+									<div class="area-messages__send-time">18:46</div>
+								</div>
+							</li>
+							<li class="area-messages__message user-message">
+								<div class="user-message__wrapper">
+									<span class="current-user">Я:</span> Всё четко! Адаптив топчик
+									<div class="area-messages__send-time">18:46</div>
+								</div>
+							</li>
+
+							<li class="area-messages__message user-message">
+								<div class="user-message__wrapper">
+									<span class="current-user">Я:</span> Добрый день!
+									<div class="area-messages__send-time">18:45</div>
+								</div>
+							</li>
+							<li class="area-messages__message other-message">
+								<div class="user-message__wrapper">
+									<span class="other-user">Собеседник:</span> Добрый день!
+									<div class="area-messages__send-time">18:45</div>
+								</div>
+							</li>
+							<li class="area-messages__message other-message">
+								<div class="user-message__wrapper">
+									<span class="other-user">Собеседник:</span> А это второе и, кажется, оно очень длинное, чтобы
+									поместиться на одной строке
+									<div class="area-messages__send-time">18:46</div>
+								</div>
+							</li>
+							<li class="area-messages__message user-message">
+								<div class="user-message__wrapper">
+									<span class="current-user">Я:</span> Всё четко! Адаптив топчик
+									<div class="area-messages__send-time">18:46</div>
+								</div>
+							</li>
+
+							<li class="area-messages__message user-message">
+								<div class="user-message__wrapper">
+									<span class="current-user">Я:</span> Добрый день!
+									<div class="area-messages__send-time">18:45</div>
+								</div>
+							</li>
+							<li class="area-messages__message other-message">
+								<div class="user-message__wrapper">
+									<span class="other-user">Собеседник:</span> Добрый день!
+									<div class="area-messages__send-time">18:45</div>
+								</div>
+							</li>
+							<li class="area-messages__message other-message">
+								<div class="user-message__wrapper">
+									<span class="other-user">Собеседник:</span> А это второе и, кажется, оно очень длинное, чтобы
+									поместиться на одной строке
+									<div class="area-messages__send-time">18:46</div>
+								</div>
+							</li>
+							<li class="area-messages__message user-message">
+								<div class="user-message__wrapper">
+									<span class="current-user">Я:</span> Всё четко! Адаптив топчик
+									<div class="area-messages__send-time">18:46</div>
+								</div>
+							</li>
+
+							<li class="area-messages__message user-message">
+								<div class="user-message__wrapper">
+									<span class="current-user">Я:</span> Добрый день!
+									<div class="area-messages__send-time">18:45</div>
+								</div>
+							</li>
+							<li class="area-messages__message other-message">
+								<div class="user-message__wrapper">
+									<span class="other-user">Собеседник:</span> Добрый день!
+									<div class="area-messages__send-time">18:45</div>
+								</div>
+							</li>
+							<li class="area-messages__message other-message">
+								<div class="user-message__wrapper">
+									<span class="other-user">Собеседник:</span> А это второе и, кажется, оно очень длинное, чтобы
+									поместиться на одной строке
+									<div class="area-messages__send-time">18:46</div>
+								</div>
+							</li>
+							<li class="area-messages__message user-message">
+								<div class="user-message__wrapper">
+									<span class="current-user">Я:</span> Всё четко! Адаптив топчик
+									<div class="area-messages__send-time">18:46</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="communication__footer-actions footer-actions-communication">
+						<form class="footer-actions-communication__form">
+							<input placeholder="Введите сообщение" type="text" class="footer-actions-communication__input">
+							<button class="footer-actions-communication__btn-send-message">
+								<img src="./img/icons/send-message.svg" alt="Иконка отправления сообщения">
+							</button>
+						</form>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<div class="modals">
+			<div class="modal-overlay">
+				<div class="modal settings-modal" data-target="modal-one">
+					<div class="settings-modal__top top-modal-settings">
+						<div class="top-modal-settings__exit"></div>
+						<div class="top-modal-settings__label">Настройки</div>
+					</div>
+					<div class="top-modal-settings__nickname">Имя в чате</div>
+					<form class="top-modal-settings__form">
+						<input type="text" class="top-modal-settings__input">
+						<button class="top-modal-settings__btn-change-user">
+							<img src="./img/icons/send-message.svg" alt="Иконка отправления сообщения">
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="module" src="./js/script.js"></script>
+</body>
+
+</html>
