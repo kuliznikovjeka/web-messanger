@@ -62,27 +62,12 @@
 }
 .top-modal-settings {
 	// .top-modal-settings__exit
-	position: relative;
 	&__exit {
+		text-align: right;
+	}
+	// .top-modal-settings__close
+	&__close {
 		cursor: pointer;
-		position: absolute;
-		top: 0;
-		right: 14px;
-		&::before,
-		&::after {
-			content: "";
-			position: absolute;
-			width: 24px;
-			height: 3px;
-			border-radius: 2px;
-			background: gray;
-		}
-		&::before {
-			transform: rotate(45deg);
-		}
-		&::after {
-			transform: rotate(-45deg);
-		}
 	}
 
 	// .top-modal-settings__label
