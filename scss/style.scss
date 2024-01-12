@@ -159,6 +159,10 @@ body {
 		padding: 5px;
 		border-radius: 4px;
 	}
+	&__inner {
+		display: flex;
+		column-gap: 5px;
+	}
 }
 
 .current-user {

@@ -21,109 +21,43 @@
 					</div>
 					<div class="communication__messages-area area-messages">
 						<ul class="area-messages__list">
-							<li class="area-messages__message user-message">
-								<div class="user-message__wrapper">
-									<span class="current-user">Я:</span> Добрый день!
-									<div class="area-messages__send-time">18:45</div>
+							<li class="area-messages__message">
+								<div class="area-messages__send-from user-message">
+									<div class="user-message__wrapper">
+										<div class="user-message__inner">
+											<span class="user-message__user">Я:</span>
+											<p class="user-message__message">Добрый день!</p>
+										</div>
+										<div class="area-messages__send-time">18:45</div>
+									</div>
 								</div>
 							</li>
-							<li class="area-messages__message other-message">
-								<div class="user-message__wrapper">
-									<span class="other-user">Собеседник:</span> Добрый день!
-									<div class="area-messages__send-time">18:45</div>
-								</div>
-							</li>
-							<li class="area-messages__message other-message">
-								<div class="user-message__wrapper">
-									<span class="other-user">Собеседник:</span> А это второе и, кажется, оно очень длинное, чтобы
-									поместиться на одной строке
-									<div class="area-messages__send-time">18:46</div>
-								</div>
-							</li>
-							<li class="area-messages__message user-message">
-								<div class="user-message__wrapper">
-									<span class="current-user">Я:</span> Всё четко! Адаптив топчик
-									<div class="area-messages__send-time">18:46</div>
+							<li class="area-messages__message">
+								<div class="other-message">
+									<div class="user-message__wrapper">
+										<div class="user-message__inner">
+											<span class="user-message__user">Я:</span>
+											<p class="user-message__message">Добрый день!</p>
+										</div>
+										<div class="area-messages__send-time">18:45</div>
+									</div>
 								</div>
 							</li>
 
-							<li class="area-messages__message user-message">
-								<div class="user-message__wrapper">
-									<span class="current-user">Я:</span> Добрый день!
-									<div class="area-messages__send-time">18:45</div>
-								</div>
-							</li>
-							<li class="area-messages__message other-message">
-								<div class="user-message__wrapper">
-									<span class="other-user">Собеседник:</span> Добрый день!
-									<div class="area-messages__send-time">18:45</div>
-								</div>
-							</li>
-							<li class="area-messages__message other-message">
-								<div class="user-message__wrapper">
-									<span class="other-user">Собеседник:</span> А это второе и, кажется, оно очень длинное, чтобы
-									поместиться на одной строке
-									<div class="area-messages__send-time">18:46</div>
-								</div>
-							</li>
-							<li class="area-messages__message user-message">
-								<div class="user-message__wrapper">
-									<span class="current-user">Я:</span> Всё четко! Адаптив топчик
-									<div class="area-messages__send-time">18:46</div>
-								</div>
-							</li>
+							<template id="message">
+								<li class="area-messages__message">
+									<div class="area-messages__send-from user-message">
+										<div class="user-message__wrapper">
+											<div class="user-message__inner">
+												<span class="user-message__user">Я:</span>
+												<p class="user-message__message">Добрый день!</p>
+											</div>
+											<div class="area-messages__send-time">18:45</div>
+										</div>
+									</div>
+								</li>
+							</template>
 
-							<li class="area-messages__message user-message">
-								<div class="user-message__wrapper">
-									<span class="current-user">Я:</span> Добрый день!
-									<div class="area-messages__send-time">18:45</div>
-								</div>
-							</li>
-							<li class="area-messages__message other-message">
-								<div class="user-message__wrapper">
-									<span class="other-user">Собеседник:</span> Добрый день!
-									<div class="area-messages__send-time">18:45</div>
-								</div>
-							</li>
-							<li class="area-messages__message other-message">
-								<div class="user-message__wrapper">
-									<span class="other-user">Собеседник:</span> А это второе и, кажется, оно очень длинное, чтобы
-									поместиться на одной строке
-									<div class="area-messages__send-time">18:46</div>
-								</div>
-							</li>
-							<li class="area-messages__message user-message">
-								<div class="user-message__wrapper">
-									<span class="current-user">Я:</span> Всё четко! Адаптив топчик
-									<div class="area-messages__send-time">18:46</div>
-								</div>
-							</li>
-
-							<li class="area-messages__message user-message">
-								<div class="user-message__wrapper">
-									<span class="current-user">Я:</span> Добрый день!
-									<div class="area-messages__send-time">18:45</div>
-								</div>
-							</li>
-							<li class="area-messages__message other-message">
-								<div class="user-message__wrapper">
-									<span class="other-user">Собеседник:</span> Добрый день!
-									<div class="area-messages__send-time">18:45</div>
-								</div>
-							</li>
-							<li class="area-messages__message other-message">
-								<div class="user-message__wrapper">
-									<span class="other-user">Собеседник:</span> А это второе и, кажется, оно очень длинное, чтобы
-									поместиться на одной строке
-									<div class="area-messages__send-time">18:46</div>
-								</div>
-							</li>
-							<li class="area-messages__message user-message">
-								<div class="user-message__wrapper">
-									<span class="current-user">Я:</span> Всё четко! Адаптив топчик
-									<div class="area-messages__send-time">18:46</div>
-								</div>
-							</li>
 						</ul>
 					</div>
 					<div class="communication__footer-actions footer-actions-communication">
@@ -143,7 +77,8 @@
 				<div class="modal settings-modal" data-target="modal-one">
 					<div class="settings-modal__top top-modal-settings">
 						<div class="top-modal-settings__exit">
-							<img class="top-modal-settings__close" src="./img/icons/close.svg" alt="Иконка закрытия модального окна">
+							<img class="top-modal-settings__close" src="./img/icons/close.svg"
+								alt="Иконка закрытия модального окна">
 						</div>
 						<div class="top-modal-settings__label">Настройки</div>
 					</div>
@@ -158,7 +93,10 @@
 			</div>
 		</div>
 	</div>
+	<script type="module" src="./js/modal.js"></script>
+	<script type="module" src="./js/events.js"></script>
 	<script type="module" src="./js/script.js"></script>
+	<script type="module" src="./js/mainFunctions.js"></script>
 </body>
 
 </html>
