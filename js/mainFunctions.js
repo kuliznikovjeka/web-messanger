@@ -10,6 +10,7 @@ function sendMessage(e) {
 	templateContent.message.textContent = messageValue;
 
 	chatElements.areaMessanges.append(li);
+	scrollToEnd()
 	resetInput(chatElements.messageInput);
 }
 
@@ -30,6 +31,14 @@ function getInputValue() {
 function resetInput(input) {
 	const emptyString = '';
 	input.value = emptyString;
+}
+
+function scrollToEnd() {
+	const lastMessage = chatElements.areaMessanges.lastElementChild;
+	const needPXToEnd = 15;
+
+	lastMessage.scrollIntoView({ block: 'end', behavior: 'instant' });
+	chatElements.areaMessanges.scrollBy(0, needPXToEnd);
 }
 
 export { sendMessage };
