@@ -1,4 +1,25 @@
 import { chatElements } from './ui-elements.js';
+import { messages } from './dataFromServer.js';
+
+function render() {
+	for (let i = 0; i < messages.length; i++) {
+		const templateContent = getTemplateContent();
+		templateContent.user.textContent = messages[i].name;
+		templateContent.message.textContent = messages[i].text;
+		templateContent.sendTime.textContent = messages[i].time;
+
+		const me = "Я:";
+		if (messages[i].name === me) {
+			templateContent.messageSendFrom.classList.add('user-message');
+		} else {
+			templateContent.messageSendFrom.classList.add('other-message');
+		}
+
+		chatElements.areaMessanges.append(templateContent.li);
+	}
+}
+
+render();
 
 function sendMessage(e) {
 	e.preventDefault();
@@ -8,10 +29,11 @@ function sendMessage(e) {
 	const messageValue = getInputValue();
 	if (messageValue.length === 0) return;
 	templateContent.message.textContent = messageValue;
+	templateContent.messageSendFrom.classList.add('user-message');
 
 	chatElements.areaMessanges.append(li);
-	scrollToEnd()
 	resetInput(chatElements.messageInput);
+	scrollToEnd();
 }
 
 function getTemplateContent() {
