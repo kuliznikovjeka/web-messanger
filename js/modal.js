@@ -1,20 +1,15 @@
 import { modalElements } from './ui-elements.js';
-
 const { modalOverlay, setingsModal, btnCloseModal } = modalElements;
-
 function openModal(e) {
-	const path = e.target.getAttribute('data-path');
-	const currentModal = document.querySelector(`[data-target='${path}']`);
-
-	currentModal.classList.add('modal__visible');
-	modalOverlay.classList.add('modal-overlay__visible');
+    const path = e.target.getAttribute('data-path');
+    const currentModal = document.querySelector(`[data-target='${path}']`);
+    currentModal.classList.add('modal__visible');
+    modalOverlay.classList.add('modal-overlay__visible');
 }
-
 function closeModal(e) {
-	if (e.target === modalOverlay || e.target === btnCloseModal) {
-		modalOverlay.classList.remove('modal-overlay__visible');
-		setingsModal.classList.remove('modal__visible');
-	}
+    if (e.target === modalOverlay || e.target === btnCloseModal) {
+        modalOverlay.classList.remove('modal-overlay__visible');
+        setingsModal.classList.remove('modal__visible');
+    }
 }
-
-export { openModal, closeModal }
+export { openModal, closeModal };

@@ -1,66 +1,50 @@
 import { chatElements } from './ui-elements.js';
-import { messages } from './dataFromServer.js';
-
-function render() {
-	for (let i = 0; i < messages.length; i++) {
-		const templateContent = getTemplateContent();
-		templateContent.user.textContent = messages[i].name;
-		templateContent.message.textContent = messages[i].text;
-		templateContent.sendTime.textContent = messages[i].time;
-
-		const me = "Я:";
-		if (messages[i].name === me) {
-			templateContent.messageSendFrom.classList.add('user-message');
-		} else {
-			templateContent.messageSendFrom.classList.add('other-message');
-		}
-
-		chatElements.areaMessanges.append(templateContent.li);
-	}
-}
-
+import { MESSAGES } from './dataFromServer.js';
+import { USERS } from './utilits/utilits-vars.js';
+import { resetInput } from './utilits/utilits-functions.js';
 render();
-
+function render() {
+    MESSAGES.forEach(MESSAGE => {
+        var _a;
+        const templateContent = getTemplateContent();
+        templateContent.user.textContent = MESSAGE.NAME;
+        templateContent.message.textContent = MESSAGE.TEXT;
+        templateContent.sendTime.textContent = MESSAGE.TIME;
+        if (MESSAGE.NAME === USERS.MYSELF) {
+            templateContent.messageSendFrom.classList.add('user-message');
+        }
+        else {
+            templateContent.messageSendFrom.classList.add('other-message');
+        }
+        (_a = chatElements.areaMessanges) === null || _a === void 0 ? void 0 : _a.append(templateContent.li);
+    });
+}
 function sendMessage(e) {
-	e.preventDefault();
-	const templateContent = getTemplateContent();
-	const li = templateContent.li;
-
-	const messageValue = getInputValue();
-	if (messageValue.length === 0) return;
-	templateContent.message.textContent = messageValue;
-	templateContent.messageSendFrom.classList.add('user-message');
-
-	chatElements.areaMessanges.append(li);
-	resetInput(chatElements.messageInput);
-	scrollToEnd();
+    var _a;
+    e.preventDefault();
+    const templateContent = getTemplateContent();
+    const li = templateContent.li;
+    const messageValue = chatElements.messageInput.value;
+    templateContent.message.textContent = messageValue;
+    templateContent.messageSendFrom.classList.add('user-message');
+    (_a = chatElements.areaMessanges) === null || _a === void 0 ? void 0 : _a.append(li);
+    resetInput(chatElements.messageInput);
+    scrollToEnd();
 }
-
 function getTemplateContent() {
-	const li = chatElements.template.content.cloneNode(true);
-	const messageSendFrom = li.querySelector('.area-messages__send-from');
-	const user = li.querySelector('.user-message__user');
-	const message = li.querySelector('.user-message__message');
-	const sendTime = li.querySelector('.area-messages__send-time');
-	return { li, messageSendFrom, user, message, sendTime };
+    var _a;
+    const li = (_a = chatElements.template) === null || _a === void 0 ? void 0 : _a.content.cloneNode(true);
+    const messageSendFrom = li.querySelector('.area-messages__send-from');
+    const user = li.querySelector('.user-message__user');
+    const message = li.querySelector('.user-message__message');
+    const sendTime = li.querySelector('.area-messages__send-time');
+    return { li, messageSendFrom, user, message, sendTime };
 }
-
-function getInputValue() {
-	const inputValue = chatElements.messageInput.value;
-	return inputValue;
-}
-
-function resetInput(input) {
-	const emptyString = '';
-	input.value = emptyString;
-}
-
 function scrollToEnd() {
-	const lastMessage = chatElements.areaMessanges.lastElementChild;
-	const needPXToEnd = 15;
-
-	lastMessage.scrollIntoView({ block: 'end', behavior: 'instant' });
-	chatElements.areaMessanges.scrollBy(0, needPXToEnd);
+    var _a, _b;
+    const lastMessage = (_a = chatElements.areaMessanges) === null || _a === void 0 ? void 0 : _a.lastElementChild;
+    const needPXToEnd = 15;
+    lastMessage === null || lastMessage === void 0 ? void 0 : lastMessage.scrollIntoView({ block: 'end', behavior: 'instant' });
+    (_b = chatElements.areaMessanges) === null || _b === void 0 ? void 0 : _b.scrollBy(0, needPXToEnd);
 }
-
 export { sendMessage };

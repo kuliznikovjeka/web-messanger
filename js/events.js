@@ -1,9 +1,10 @@
+var _a, _b, _c;
 import { modalElements } from './ui-elements.js';
 import { openModal, closeModal } from './modal.js';
 import { chatElements } from './ui-elements.js';
 import { sendMessage } from './mainFunctions.js';
-
-const eventOpenMoval = modalElements.btnSettings.addEventListener("click", openModal);
-const eventCloseModal = modalElements.modalOverlay.addEventListener("click", closeModal);
-const sendMessageToUser = chatElements.formForMessage.addEventListener("submit", sendMessage);
-
+import { checkInputChanges } from './utilits/utilits-functions.js';
+const eventOpenModal = (_a = modalElements.btnSettings) === null || _a === void 0 ? void 0 : _a.addEventListener("click", openModal);
+const eventCloseModal = (_b = modalElements.modalOverlay) === null || _b === void 0 ? void 0 : _b.addEventListener("click", closeModal);
+const eventSendMessageToUser = (_c = chatElements.formForMessage) === null || _c === void 0 ? void 0 : _c.addEventListener("submit", sendMessage);
+const eventCheckInputChanges = chatElements.messageInput.addEventListener("input", checkInputChanges);

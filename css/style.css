@@ -281,7 +281,7 @@ body {
 }
 
 .communication__messages-area {
-  word-break: break-all;
+  word-break: break-word;
   -webkit-box-flex: 1;
       -ms-flex: 1 1 auto;
           flex: 1 1 auto;
@@ -440,7 +440,13 @@ body {
   padding: 12px 0px 12px 8px;
 }
 
+.footer-actions-communication__input.border {
+  border-radius: 6px;
+  padding-right: 8px;
+}
+
 .footer-actions-communication__btn-send-message {
+  display: block;
   background: #fff;
   padding: 8px;
   border-radius: 0px 6px 6px 0px;
@@ -460,4 +466,8 @@ body {
     -webkit-transform: scale(1.1);
             transform: scale(1.1);
   }
+}
+
+.footer-actions-communication__btn-send-message.hide {
+  display: none;
 }
