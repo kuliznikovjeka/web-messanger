@@ -21,7 +21,6 @@
 					</div>
 					<div class="communication__messages-area area-messages">
 						<ul class="area-messages__list">
-
 							<template id="message">
 								<li class="area-messages__message">
 									<div class="area-messages__send-from">
@@ -35,12 +34,12 @@
 									</div>
 								</li>
 							</template>
-
 						</ul>
 					</div>
 					<div class="communication__footer-actions footer-actions-communication">
 						<form class="footer-actions-communication__form">
-							<input placeholder="Введите сообщение" type="text" class="footer-actions-communication__input border">
+							<input placeholder="Введите сообщение" type="text"
+								class="footer-actions-communication__input border">
 							<button class="footer-actions-communication__btn-send-message hide">
 								<img src="./img/icons/send-message.svg" alt="Иконка отправления сообщения">
 							</button>
@@ -48,11 +47,59 @@
 					</div>
 				</div>
 			</section>
+			<dialog id="authorization" class="authorization">
+				<div class="authorization__body">
+					<h3 class="authorization__title">Авторизация</h3>
+					<form id="authorization-form" class="authorization__form">
+						<div id="authorization-wrapper" class="authorization__wrapper">
+							<label class="authorization__email">Почта:</label>
+							<input placeholder="Введите почту" type="email" id="input-email" class="authorization__input">
+							<p class="authorization-error">ОШИБКА! Неправильно введена почта</p>
+							<p class="authorization-success">УСПЕШНО! Код для входа отправлен на почту</p>
+						</div>
+						<div class="authorization__actions">
+							<button class="authorization__btn btn-action">Получить код</button>
+							<button id="btn-inter-code" type="button" class="authorization__btn btn-action">Ввести код</button>
+						</div>
+					</form>
+				</div>
+			</dialog>
+			<dialog id="log-in" class="authorization hidden">
+				<div class="authorization__body">
+					<h3 class="authorization__title">Подтверждение</h3>
+					<form action="" class="authorization__form">
+						<div class="authorization__wrapper">
+							<label for="" class="authorization__email">Код:</label>
+							<input id="get-code" placeholder="Введите код" type="text" id="input-code"
+								class="authorization__input">
+						</div>
+						<div class="authorization__actions">
+							<button class="authorization__btn btn-action">Войти</button>
+							<button type="button" id="btn-come-back" class="authorization__btn btn-action">Назад</button>
+						</div>
+					</form>
+				</div>
+			</dialog>
 		</main>
-
 		<div class="modals">
 			<div class="modal-overlay">
 				<div class="modal settings-modal" data-target="modal-one">
+					<div class="settings-modal__top top-modal-settings">
+						<div class="top-modal-settings__exit">
+							<img class="top-modal-settings__close" src="./img/icons/close.svg"
+								alt="Иконка закрытия модального окна">
+						</div>
+						<div class="top-modal-settings__label">Настройки</div>
+					</div>
+					<div class="top-modal-settings__nickname">Имя в чате</div>
+					<form class="top-modal-settings__form">
+						<input type="text" class="top-modal-settings__input">
+						<button class="top-modal-settings__btn-change-user">
+							<img src="./img/icons/send-message.svg" alt="Иконка отправления сообщения">
+						</button>
+					</form>
+				</div>
+				<div class="modal settings-modal" data-target="authorization">
 					<div class="settings-modal__top top-modal-settings">
 						<div class="top-modal-settings__exit">
 							<img class="top-modal-settings__close" src="./img/icons/close.svg"
@@ -73,6 +120,7 @@
 	</div>
 	<script type="module" src="./js/modal.js"></script>
 	<script type="module" src="./js/events.js"></script>
+	<script type="module" src="./js/authorization.js"></script>
 	<script type="module" src="./js/utilits/utilits-functions.js"></script>
 	<script type="module" src="./js/mainFunctions.js"></script>
 </body>

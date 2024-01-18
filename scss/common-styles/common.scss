@@ -1,0 +1,10 @@
+@import "../colors/colors";
+
+.authorization-error {
+	color: $redColor;
+	display: none;
+}
+.authorization-success {
+	color: $greenColor;
+	display: none;
+}

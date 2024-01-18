@@ -1,7 +1,12 @@
 const MESSAGES = [
-    { TEXT: "Привет!", NAME: "Я:", TIME: "18:55" },
-    { TEXT: "Дарова", NAME: "Ментор:", TIME: "18:56" },
-    { TEXT: "Я сегодня делал задание, было очень замудренно и тяжело", NAME: "Я:", TIME: "18:57" },
-    { TEXT: "Учись щенок, дальше будет только хуже))", NAME: "Ментор:", TIME: "18:58" }
+	{ TEXT: "Привет!", NAME: "Я:", TIME: "18:55" },
+	{ TEXT: "Дарова", NAME: "Ментор:", TIME: "18:56" },
+	{ TEXT: "Я сегодня делал задание, было очень замудренно и тяжело", NAME: "Я:", TIME: "18:57" },
+	{ TEXT: "Учись щенок, дальше будет только хуже))", NAME: "Ментор:", TIME: "18:58" }
 ];
-export { MESSAGES };
+
+const DATA_SERVER = {
+	URL: 'https://edu.strada.one/api/user',
+}
+
+export { MESSAGES, DATA_SERVER };

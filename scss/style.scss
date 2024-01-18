@@ -3,6 +3,9 @@
 @import "./modals";
 @import "./common-styles/button";
 @import "./colors/colors";
+@import "./common-styles/error";
+@import "./common-styles/common";
+@import "./common-styles/dynamic-classes";
 
 body {
 	font-family: "Inter", sans-serif;
@@ -18,15 +21,13 @@ body {
 }
 //========================================================================================================================================================
 
+//========================================================================================================================================================
+
 .wrapper {
 	display: flex;
 	flex-direction: column;
 	min-height: 100%;
 	overflow: hidden;
-}
-
-.main {
-	flex: 1 1 auto;
 }
 
 .communication {
@@ -40,7 +41,6 @@ body {
 	// .communication__container
 
 	&__container {
-		min-height: 100vh;
 		display: flex;
 		flex-direction: column;
 	}
@@ -103,7 +103,13 @@ body {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
-	max-height: 800px;
+	height: 800px;
+	@media (max-width: 992px) {
+		height: 700px;
+	}
+	@media (max-width: 767px) {
+		height: 600px;
+	}
 	@media (max-width: 550px) {
 		max-height: 500px;
 	}
