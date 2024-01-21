@@ -89,6 +89,9 @@
 	&__form {
 		display: flex;
 		justify-content: space-between;
+		&:not(:last-child) {
+			margin-bottom: 15px;
+		}
 	}
 
 	// .top-modal-settings__input
@@ -117,6 +120,11 @@
 				}
 			}
 		}
+	}
+
+	&__success {
+		color: $greenColor;
+		display: none;
 	}
 }
 //========================================================================================================================================================
@@ -209,5 +217,12 @@
 				background-color: $hoverGreenColor;
 			}
 		}
+	}
+}
+
+.error {
+	&::placeholder {
+		font-size: 14px;
+		color: $redColor;
 	}
 }

@@ -1,4 +1,4 @@
-import { modalElements } from './ui-elements.js';
+import { modalElements } from './constants/ui-elements.js';
 
 const { modalOverlay, setingsModal, btnCloseModal } = modalElements;
 
@@ -13,6 +13,7 @@ function closeModal(e) {
 	if (e.target === modalOverlay || e.target === btnCloseModal) {
 		modalOverlay.classList.remove('modal-overlay__visible');
 		setingsModal.classList.remove('modal__visible');
+		modalElements.textSuccsess.classList.remove('show');
 	}
 }
 
