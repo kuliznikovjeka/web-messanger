@@ -582,21 +582,7 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 var _uiElementsJs = require("./constants/ui-elements.js");
 var _serverDataJs = require("./constants/server-data.js");
 var _utilitsJs = require("./constants/utilits.js");
-var _utilsFunctionsJs = require("./utils-functions.js"); // render();
- // function render() {
- // 	MESSAGES.forEach(MESSAGE => {
- // 		const templateContent = getTemplateContent();
- // 		templateContent.user.textContent = MESSAGE.NAME;
- // 		templateContent.message.textContent = MESSAGE.TEXT;
- // 		templateContent.sendTime.textContent = MESSAGE.TIME;
- // 		if (MESSAGE.NAME === USERS.MYSELF) {
- // 			templateContent.messageSendFrom.classList.add('user-message');
- // 		} else {
- // 			templateContent.messageSendFrom.classList.add('other-message');
- // 		}
- // 		chatElements.areaMessanges.append(templateContent.li)
- // 	});
- // }
+var _utilsFunctionsJs = require("./utils-functions.js");
 
 },{"./constants/ui-elements.js":"bu1WM","./constants/server-data.js":"fvwtp","./constants/utilits.js":"keFfz","./utils-functions.js":"jvcxR"}],"keFfz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
