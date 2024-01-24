@@ -593,13 +593,16 @@ async function renderMessages() {
     const reversedArrayMessages = dataMessages.messages.reverse();
     reversedArrayMessages.forEach((message)=>{
         const templateContent = (0, _utilsFunctionsJs.getTemplateContent)();
-        templateContent.user.textContent = message.user.name;
         templateContent.message.textContent = message.text;
         templateContent.sendTime.textContent = (0, _dateFns.format)(new Date(message.createdAt), "H:mm");
         if (message.user.email === (0, _jsCookieDefault.default).get("user-email")) templateContent.messageSendFrom.classList.add("user-message");
-        else templateContent.messageSendFrom.classList.add("other-message");
+        else {
+            templateContent.messageSendFrom.classList.add("other-message");
+            templateContent.user.textContent = message.user.name;
+        }
         (0, _uiElementsJs.chatElements).areaMessanges.append(templateContent.li);
     });
+    (0, _utilsFunctionsJs.scrollToEnd)();
 }
 
 },{"./data-messages.js":"2Ocsw","../utils-functions.js":"jvcxR","../constants/ui-elements.js":"bu1WM","date-fns":"dU215","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2Ocsw":[function(require,module,exports) {
@@ -665,7 +668,8 @@ const MESSAGES = [
 const DATA_SERVER = {
     URL: "https://edu.strada.one/api/user",
     USER_INFORM: "https://edu.strada.one/api/user/me",
-    MESSAGES: "https://edu.strada.one/api/messages/"
+    MESSAGES: "https://edu.strada.one/api/messages/",
+    WEB_SOCKET: "wss://edu.strada.one/websockets?"
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {

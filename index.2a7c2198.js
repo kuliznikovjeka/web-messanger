@@ -584,11 +584,11 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "eventOpenModal", ()=>eventOpenModal);
 var _uiElementsJs = require("./constants/ui-elements.js");
 var _changeNameJs = require("./user/change-name.js");
-var _sendMessageJs = require("./user/send-message.js");
 var _authorizationJs = require("./authorization/authorization.js");
 var _utilitsJs = require("./authorization/utilits.js");
 var _modalJs = require("./modal.js");
 var _validationJs = require("./validation.js");
+var _sendMessageJs = require("./user/send-message.js");
 var _dataMessagesJs = require("./users-messages/data-messages.js");
 const eventOpenModal = (0, _uiElementsJs.modalElements).btnSettings.addEventListener("click", (0, _modalJs.openModal));
 const eventCloseModal = (0, _uiElementsJs.modalElements).modalOverlay.addEventListener("click", (0, _modalJs.closeModal));
@@ -600,7 +600,7 @@ const eventAuthorization = (0, _uiElementsJs.authorization).formAuthorization.ad
 const eventLogInToChat = (0, _uiElementsJs.authorization).formLogIn.addEventListener("submit", (0, _authorizationJs.logInToChat));
 const eventChangeName = (0, _uiElementsJs.modalElements).formChangeName.addEventListener("submit", (0, _changeNameJs.changeName));
 
-},{"./constants/ui-elements.js":"bu1WM","./user/change-name.js":"hzufp","./user/send-message.js":"7wAAX","./authorization/authorization.js":"3KaEz","./authorization/utilits.js":"13YuS","./modal.js":"guy4I","./validation.js":"68QtQ","./users-messages/data-messages.js":"2Ocsw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bu1WM":[function(require,module,exports) {
+},{"./constants/ui-elements.js":"bu1WM","./user/change-name.js":"hzufp","./authorization/authorization.js":"3KaEz","./authorization/utilits.js":"13YuS","./modal.js":"guy4I","./validation.js":"68QtQ","./user/send-message.js":"7wAAX","./users-messages/data-messages.js":"2Ocsw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bu1WM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "modalElements", ()=>modalElements);
@@ -727,7 +727,8 @@ const MESSAGES = [
 const DATA_SERVER = {
     URL: "https://edu.strada.one/api/user",
     USER_INFORM: "https://edu.strada.one/api/user/me",
-    MESSAGES: "https://edu.strada.one/api/messages/"
+    MESSAGES: "https://edu.strada.one/api/messages/",
+    WEB_SOCKET: "wss://edu.strada.one/websockets?"
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jvcxR":[function(require,module,exports) {
@@ -862,54 +863,7 @@ function buildElement(tagName, className, text) {
     /* eslint-enable no-var */ return api;
 });
 
-},{}],"7wAAX":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "sendMessage", ()=>sendMessage);
-var _validation = require("../validation");
-var _utilsFunctions = require("../utils-functions");
-var _uiElements = require("../constants/ui-elements");
-function sendMessage(e) {
-    e.preventDefault();
-    const messageValue = (0, _uiElements.chatElements).messageInput.value;
-    if (!messageValue) return;
-    const templateContent = (0, _utilsFunctions.getTemplateContent)();
-    const li = templateContent.li;
-    templateContent.message.textContent = messageValue;
-    templateContent.messageSendFrom.classList.add("user-message");
-    (0, _uiElements.chatElements).areaMessanges.append(li);
-    (0, _utilsFunctions.resetInput)((0, _uiElements.chatElements).messageInput);
-    (0, _utilsFunctions.scrollToEnd)();
-}
-
-},{"../validation":"68QtQ","../utils-functions":"jvcxR","../constants/ui-elements":"bu1WM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"68QtQ":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "showError", ()=>showError);
-parcelHelpers.export(exports, "showSuccess", ()=>showSuccess);
-parcelHelpers.export(exports, "validateEmptyMessage", ()=>validateEmptyMessage);
-var _utilsFunctions = require("./utils-functions");
-var _uiElements = require("./constants/ui-elements");
-function showError(errorElement, successElement, inputWhichReset) {
-    errorElement.classList.add("show");
-    successElement.classList.remove("show");
-    (0, _utilsFunctions.resetInput)(inputWhichReset);
-}
-function showSuccess(successElement, errorElement) {
-    successElement.classList.add("show");
-    errorElement.classList.remove("show");
-}
-function validateEmptyMessage() {
-    if ((0, _uiElements.chatElements).messageInput.value.trim() === "") {
-        (0, _uiElements.chatElements).messageInput.classList.add("border");
-        (0, _uiElements.chatElements).btnSendMsg.classList.add("hide");
-    } else {
-        (0, _uiElements.chatElements).messageInput.classList.remove("border");
-        (0, _uiElements.chatElements).btnSendMsg.classList.remove("hide");
-    }
-}
-
-},{"./utils-functions":"jvcxR","./constants/ui-elements":"bu1WM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3KaEz":[function(require,module,exports) {
+},{}],"3KaEz":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "sendCodeToUser", ()=>sendCodeToUser);
@@ -919,6 +873,7 @@ var _serverDataJs = require("../constants/server-data.js");
 var _validationJs = require("../validation.js");
 var _utilsFunctionsJs = require("../utils-functions.js");
 var _renderMessagesJs = require("../users-messages/render-messages.js");
+var _sendMessageJs = require("../user/send-message.js");
 var _jsCookie = require("js-cookie");
 var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
 var _sweetalert2 = require("sweetalert2");
@@ -979,6 +934,7 @@ async function logInToChat(e) {
         (0, _jsCookieDefault.default).set("userToken", token);
         (0, _uiElementsJs.authorization).modalLogIn.classList.add("hidden");
         await (0, _renderMessagesJs.renderMessages)();
+        (0, _sendMessageJs.connectWebsocket)(e);
     } else {
         (0, _sweetalert2Default.default).fire({
             title: "\u041D\u0435\u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u044B\u0439 \u043A\u043E\u0434",
@@ -993,7 +949,34 @@ async function logInToChat(e) {
     }
 }
 
-},{"../constants/ui-elements.js":"bu1WM","../constants/server-data.js":"fvwtp","../validation.js":"68QtQ","../utils-functions.js":"jvcxR","../users-messages/render-messages.js":"k7A3p","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","sweetalert2":"1HyFr"}],"k7A3p":[function(require,module,exports) {
+},{"../constants/ui-elements.js":"bu1WM","../constants/server-data.js":"fvwtp","../validation.js":"68QtQ","../utils-functions.js":"jvcxR","../users-messages/render-messages.js":"k7A3p","../user/send-message.js":"7wAAX","js-cookie":"c8bBu","sweetalert2":"1HyFr","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"68QtQ":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "showError", ()=>showError);
+parcelHelpers.export(exports, "showSuccess", ()=>showSuccess);
+parcelHelpers.export(exports, "validateEmptyMessage", ()=>validateEmptyMessage);
+var _utilsFunctions = require("./utils-functions");
+var _uiElements = require("./constants/ui-elements");
+function showError(errorElement, successElement, inputWhichReset) {
+    errorElement.classList.add("show");
+    successElement.classList.remove("show");
+    (0, _utilsFunctions.resetInput)(inputWhichReset);
+}
+function showSuccess(successElement, errorElement) {
+    successElement.classList.add("show");
+    errorElement.classList.remove("show");
+}
+function validateEmptyMessage() {
+    if ((0, _uiElements.chatElements).messageInput.value.trim() === "") {
+        (0, _uiElements.chatElements).messageInput.classList.add("border");
+        (0, _uiElements.chatElements).btnSendMsg.classList.add("hide");
+    } else {
+        (0, _uiElements.chatElements).messageInput.classList.remove("border");
+        (0, _uiElements.chatElements).btnSendMsg.classList.remove("hide");
+    }
+}
+
+},{"./utils-functions":"jvcxR","./constants/ui-elements":"bu1WM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k7A3p":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "renderMessages", ()=>renderMessages);
@@ -1008,13 +991,16 @@ async function renderMessages() {
     const reversedArrayMessages = dataMessages.messages.reverse();
     reversedArrayMessages.forEach((message)=>{
         const templateContent = (0, _utilsFunctionsJs.getTemplateContent)();
-        templateContent.user.textContent = message.user.name;
         templateContent.message.textContent = message.text;
         templateContent.sendTime.textContent = (0, _dateFns.format)(new Date(message.createdAt), "H:mm");
         if (message.user.email === (0, _jsCookieDefault.default).get("user-email")) templateContent.messageSendFrom.classList.add("user-message");
-        else templateContent.messageSendFrom.classList.add("other-message");
+        else {
+            templateContent.messageSendFrom.classList.add("other-message");
+            templateContent.user.textContent = message.user.name;
+        }
         (0, _uiElementsJs.chatElements).areaMessanges.append(templateContent.li);
     });
+    (0, _utilsFunctionsJs.scrollToEnd)();
 }
 
 },{"./data-messages.js":"2Ocsw","../utils-functions.js":"jvcxR","../constants/ui-elements.js":"bu1WM","date-fns":"dU215","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2Ocsw":[function(require,module,exports) {
@@ -21848,7 +21834,51 @@ var _index = require("387b0aecfe84b867");
     return Math.trunc(years * _index.quartersInYear);
 }
 
-},{"387b0aecfe84b867":"1vXXw"}],"13YuS":[function(require,module,exports) {
+},{"387b0aecfe84b867":"1vXXw"}],"7wAAX":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "connectWebsocket", ()=>connectWebsocket);
+parcelHelpers.export(exports, "sendMessage", ()=>sendMessage);
+var _utilsFunctionsJs = require("../utils-functions.js");
+var _uiElementsJs = require("../constants/ui-elements.js");
+var _serverDataJs = require("../constants/server-data.js");
+var _dateFns = require("date-fns");
+var _jsCookie = require("js-cookie");
+var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
+let socket;
+function connectWebsocket(e) {
+    const token = (0, _jsCookieDefault.default).get("userToken");
+    const url = (0, _serverDataJs.DATA_SERVER).WEB_SOCKET + token;
+    socket = new WebSocket(url);
+    socket.onopen = ()=>{
+        console.log("\u0441\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\u0435 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043E");
+    };
+    socket.onmessage = (e)=>{
+        const data = JSON.parse(e.data);
+        (0, _utilsFunctionsJs.resetInput)((0, _uiElementsJs.chatElements).messageInput);
+        const templateContent = (0, _utilsFunctionsJs.getTemplateContent)();
+        templateContent.message.textContent = data.text;
+        templateContent.user.textContent = data.user.name;
+        templateContent.sendTime.textContent = (0, _dateFns.format)(new Date(data.createdAt), "H:mm");
+        if (data.user.email === (0, _jsCookieDefault.default).get("user-email")) templateContent.messageSendFrom.classList.add("user-message");
+        else {
+            templateContent.messageSendFrom.classList.add("other-message");
+            templateContent.user.textContent = data.user.name;
+        }
+        (0, _uiElementsJs.chatElements).areaMessanges.append(templateContent.li);
+        (0, _utilsFunctionsJs.scrollToEnd)();
+    };
+}
+function sendMessage(e) {
+    e.preventDefault();
+    const message = (0, _uiElementsJs.chatElements).messageInput.value;
+    if (!message) return;
+    socket.send(JSON.stringify({
+        text: message
+    }));
+}
+
+},{"../utils-functions.js":"jvcxR","../constants/ui-elements.js":"bu1WM","../constants/server-data.js":"fvwtp","date-fns":"dU215","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"13YuS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "resetAuthorization", ()=>resetAuthorization);
