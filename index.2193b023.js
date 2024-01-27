@@ -142,13 +142,13 @@
       this[globalName] = mainExports;
     }
   }
-})({"8F5sj":[function(require,module,exports) {
+})({"6Yl4k":[function(require,module,exports) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d6ea1d42532a7575";
-module.bundle.HMR_BUNDLE_ID = "106c69fefbb3188c";
+module.bundle.HMR_BUNDLE_ID = "bfafecdb2193b023";
 "use strict";
 /* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
@@ -578,46 +578,9 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
     });
 }
 
-},{}],"bDbGG":[function(require,module,exports) {
-var _uiElementsJs = require("./constants/ui-elements.js");
-var _serverDataJs = require("./constants/server-data.js");
-var _utilitsJs = require("./constants/utilits.js");
-var _utilsFunctionsJs = require("./utils-functions.js");
+},{}],"212ya":[function(require,module,exports) {
+var _dataMessagesJs = require("./users-messages/data-messages.js");
 
-},{"./constants/ui-elements.js":"bu1WM","./constants/server-data.js":"fvwtp","./constants/utilits.js":"keFfz","./utils-functions.js":"jvcxR"}],"fvwtp":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "MESSAGES", ()=>MESSAGES);
-parcelHelpers.export(exports, "DATA_SERVER", ()=>DATA_SERVER);
-const MESSAGES = [
-    {
-        TEXT: "\u041F\u0440\u0438\u0432\u0435\u0442!",
-        NAME: "\u042F:",
-        TIME: "18:55"
-    },
-    {
-        TEXT: "\u0414\u0430\u0440\u043E\u0432\u0430",
-        NAME: "\u041C\u0435\u043D\u0442\u043E\u0440:",
-        TIME: "18:56"
-    },
-    {
-        TEXT: "\u042F \u0441\u0435\u0433\u043E\u0434\u043D\u044F \u0434\u0435\u043B\u0430\u043B \u0437\u0430\u0434\u0430\u043D\u0438\u0435, \u0431\u044B\u043B\u043E \u043E\u0447\u0435\u043D\u044C \u0437\u0430\u043C\u0443\u0434\u0440\u0435\u043D\u043D\u043E \u0438 \u0442\u044F\u0436\u0435\u043B\u043E",
-        NAME: "\u042F:",
-        TIME: "18:57"
-    },
-    {
-        TEXT: "\u0423\u0447\u0438\u0441\u044C \u0449\u0435\u043D\u043E\u043A, \u0434\u0430\u043B\u044C\u0448\u0435 \u0431\u0443\u0434\u0435\u0442 \u0442\u043E\u043B\u044C\u043A\u043E \u0445\u0443\u0436\u0435))",
-        NAME: "\u041C\u0435\u043D\u0442\u043E\u0440:",
-        TIME: "18:58"
-    }
-];
-const DATA_SERVER = {
-    URL: "https://edu.strada.one/api/user",
-    USER_INFORM: "https://edu.strada.one/api/user/me",
-    MESSAGES: "https://edu.strada.one/api/messages/",
-    WEB_SOCKET: "wss://edu.strada.one/websockets?"
-};
+},{"./users-messages/data-messages.js":"2Ocsw"}]},["6Yl4k","212ya"], "212ya", "parcelRequire94c2")
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["8F5sj","bDbGG"], "bDbGG", "parcelRequire94c2")
-
-//# sourceMappingURL=index.fbb3188c.js.map
+//# sourceMappingURL=index.2193b023.js.map
