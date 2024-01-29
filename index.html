@@ -52,9 +52,7 @@
 					<form id="authorization-form" class="authorization__form">
 						<div id="authorization-wrapper" class="authorization__wrapper">
 							<label class="authorization__email">Почта:</label>
-							<input placeholder="Введите почту" type="email" id="input-email" class="authorization__input">
-							<p class="authorization-error">ОШИБКА! Неправильно введена почта</p>
-							<p class="authorization-success">УСПЕШНО! Код для входа отправлен на почту</p>
+							<input placeholder="Введите почту" type="email" id="input-email" required="" class="authorization__input">
 						</div>
 						<div class="authorization__actions">
 							<button class="authorization__btn btn-action">Получить код</button>
@@ -70,7 +68,6 @@
 						<div class="authorization__wrapper">
 							<label for="" class="authorization__email">Код:</label>
 							<input placeholder="Введите код" type="text" id="input-code" class="authorization__input">
-							<p id="error-token" class="authorization-error">ОШИБКА! Неправильный код</p>
 						</div>
 						<div class="authorization__actions">
 							<button class="authorization__btn btn-action">Войти</button>
@@ -91,25 +88,9 @@
 					</div>
 					<div class="top-modal-settings__nickname">Имя в чате</div>
 					<form id="form-change-name" class="top-modal-settings__form">
-						<input id="input-change-name" type="text" class="top-modal-settings__input">
+						<input id="input-change-name" type="text" placeholder="Введите имя" class="top-modal-settings__input">
 						<button class="top-modal-settings__btn-change-user">
-							<img src="send-message.331a37e3.svg" alt="Иконка отправления сообщения">
-						</button>
-					</form>
-					<p class="top-modal-settings__success">УСПЕШНО! Имя изменено</p>
-				</div>
-				<div class="modal settings-modal" data-target="authorization">
-					<div class="settings-modal__top top-modal-settings">
-						<div class="top-modal-settings__exit">
-							<img class="top-modal-settings__close" src="close.513bf164.svg" alt="Иконка закрытия модального окна">
-						</div>
-						<div class="top-modal-settings__label">Настройки</div>
-					</div>
-					<div class="top-modal-settings__nickname">Имя в чате</div>
-					<form class="top-modal-settings__form">
-						<input type="text" class="top-modal-settings__input">
-						<button class="top-modal-settings__btn-change-user">
-							<img src="send-message.331a37e3.svg" alt="Иконка отправления сообщения">
+							<img src="send-message.331a37e3.svg" alt="Кнопка отправления сообщения">
 						</button>
 					</form>
 				</div>
@@ -119,6 +100,7 @@
 
 	<script async="" src="index.2a7c2198.js" defer=""></script>
 	<script src="index.ac5606db.js" defer=""></script>
+	<script src="index.e4e506a0.js" defer=""></script>
 	<script src="index.fbb3188c.js" defer=""></script>
 </body>
 

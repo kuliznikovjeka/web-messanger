@@ -582,10 +582,10 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "renderMessages", ()=>renderMessages);
+parcelHelpers.export(exports, "renderSingleMessage", ()=>renderSingleMessage);
 parcelHelpers.export(exports, "lazyLoadingMessages", ()=>lazyLoadingMessages);
 var _utilsFunctionsJs = require("../utils-functions.js");
 var _uiElementsJs = require("../constants/ui-elements.js");
-var _utilitsJs = require("../constants/utilits.js");
 var _dateFns = require("date-fns");
 var _jsCookie = require("js-cookie");
 var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
@@ -593,35 +593,48 @@ function lazyLoadingMessages() {
     if ((0, _uiElementsJs.chatElements).messageList.scrollTop === 0) renderMessages();
 }
 function renderMessages() {
+    const countOfRenderMessages = 19;
     const messages = localStorage.getItem("message-history");
     const arrayMassages = JSON.parse(messages).reverse();
-    const needToRenderMessages = arrayMassages.slice(arrayMassages.length - (0, _utilitsJs.countOfRenderMessages));
-    const newArr = arrayMassages.slice(0, arrayMassages.length - (0, _utilitsJs.countOfRenderMessages));
+    const needToRenderMessages = arrayMassages.slice(arrayMassages.length - countOfRenderMessages);
+    const newArr = arrayMassages.slice(0, arrayMassages.length - countOfRenderMessages);
     needToRenderMessages.reverse().forEach((message)=>{
-        const templateContent = (0, _utilsFunctionsJs.getTemplateContent)();
-        templateContent.message.textContent = message.text;
-        templateContent.sendTime.textContent = (0, _dateFns.format)(new Date(message.createdAt), "H:mm");
-        if (message.user.email === (0, _jsCookieDefault.default).get("user-email")) templateContent.messageSendFrom.classList.add("user-message");
-        else {
-            templateContent.messageSendFrom.classList.add("other-message");
-            templateContent.user.textContent = message.user.name;
-        }
-        (0, _uiElementsJs.chatElements).areaMessanges.prepend(templateContent.li);
+        renderSingleMessage(message, "prepend");
     });
     localStorage.setItem("message-history", JSON.stringify(newArr));
 }
+function renderSingleMessage(message, insertionMethod = "append") {
+    const templateContent = (0, _utilsFunctionsJs.getTemplateContent)();
+    templateContent.message.textContent = message.text;
+    templateContent.sendTime.textContent = (0, _dateFns.format)(new Date(message.createdAt), "H:mm");
+    if (message.user.email === (0, _jsCookieDefault.default).get("user-email")) templateContent.messageSendFrom.classList.add("user-message");
+    else {
+        templateContent.messageSendFrom.classList.add("other-message");
+        templateContent.user.textContent = message.user.name;
+    }
+    if (insertionMethod === "prepend") (0, _uiElementsJs.chatElements).areaMessanges.prepend(templateContent.li);
+    else if (insertionMethod === "append") (0, _uiElementsJs.chatElements).areaMessanges.append(templateContent.li);
+}
 
-},{"../utils-functions.js":"jvcxR","../constants/ui-elements.js":"bu1WM","../constants/utilits.js":"keFfz","date-fns":"dU215","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jvcxR":[function(require,module,exports) {
+},{"../utils-functions.js":"jvcxR","../constants/ui-elements.js":"bu1WM","date-fns":"dU215","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jvcxR":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "resetInput", ()=>resetInput);
 parcelHelpers.export(exports, "getTemplateContent", ()=>getTemplateContent);
 parcelHelpers.export(exports, "scrollToEnd", ()=>scrollToEnd);
-parcelHelpers.export(exports, "buildElement", ()=>buildElement);
+parcelHelpers.export(exports, "closeDialog", ()=>closeDialog);
+parcelHelpers.export(exports, "validateSendingEmptyMessage", ()=>validateSendingEmptyMessage);
 var _uiElementsJs = require("./constants/ui-elements.js");
+getLastUserName();
+function getLastUserName() {
+    (0, _uiElementsJs.modalElements).inputChangeName.value = localStorage.getItem("user-name");
+}
 function resetInput(input) {
     const emptyString = "";
     input.value = emptyString;
+}
+function closeDialog(modal) {
+    modal.classList.add("hidden");
 }
 function getTemplateContent() {
     const li = (0, _uiElementsJs.chatElements).template.content.cloneNode(true);
@@ -640,11 +653,14 @@ function getTemplateContent() {
 function scrollToEnd() {
     (0, _uiElementsJs.chatElements).areaMessanges.scrollTop = (0, _uiElementsJs.chatElements).areaMessanges.scrollHeight;
 }
-function buildElement(tagName, className, text) {
-    const tag = document.createElement(tagName);
-    tag.classList.add(className);
-    tag.textContent = text;
-    return tag;
+function validateSendingEmptyMessage() {
+    if ((0, _uiElementsJs.chatElements).messageInput.value.trim() === "") {
+        (0, _uiElementsJs.chatElements).messageInput.classList.add("border");
+        (0, _uiElementsJs.chatElements).btnSendMsg.classList.add("hide");
+    } else {
+        (0, _uiElementsJs.chatElements).messageInput.classList.remove("border");
+        (0, _uiElementsJs.chatElements).btnSendMsg.classList.remove("hide");
+    }
 }
 
 },{"./constants/ui-elements.js":"bu1WM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bu1WM":[function(require,module,exports) {
@@ -659,8 +675,7 @@ const modalElements = {
     setingsModal: document.querySelector(".settings-modal"),
     btnCloseModal: document.querySelector(".top-modal-settings__close"),
     inputChangeName: document.querySelector("#input-change-name"),
-    formChangeName: document.querySelector("#form-change-name"),
-    textSuccsess: document.querySelector(".top-modal-settings__success")
+    formChangeName: document.querySelector("#form-change-name")
 };
 const chatElements = {
     formForMessage: document.querySelector(".footer-actions-communication__form"),
@@ -669,6 +684,7 @@ const chatElements = {
     template: document.querySelector("#message"),
     messageFrom: document.querySelector(".area-messages__send-from"),
     btnSendMsg: document.querySelector(".footer-actions-communication__btn-send-message"),
+    btnExitChat: document.querySelector(".top-actions-communication__btn-exit"),
     messageList: document.querySelector(".area-messages__list")
 };
 const authorization = {
@@ -680,10 +696,7 @@ const authorization = {
     btnEnterCode: document.querySelector("#btn-inter-code"),
     btn\u0421omeBack: document.querySelector("#btn-come-back"),
     inputLogIn: document.querySelector("#input-code"),
-    authorizationWrapper: document.querySelector("#authorization-wrapper"),
-    error: document.querySelector(".authorization-error"),
-    errorToken: document.querySelector("#error-token"),
-    success: document.querySelector(".authorization-success")
+    authorizationWrapper: document.querySelector("#authorization-wrapper")
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
@@ -716,17 +729,7 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"keFfz":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "USERS", ()=>USERS);
-parcelHelpers.export(exports, "countOfRenderMessages", ()=>countOfRenderMessages);
-const USERS = {
-    MYSELF: "\u042F:"
-};
-const countOfRenderMessages = 19;
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dU215":[function(require,module,exports) {
+},{}],"dU215":[function(require,module,exports) {
 "use strict";
 var _index = require("bb476f479aec785f");
 Object.keys(_index).forEach(function(key) {

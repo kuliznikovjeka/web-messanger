@@ -158,11 +158,6 @@ table {
   }
 }
 
-.top-modal-settings__success {
-  color: #9ccf1b;
-  display: none;
-}
-
 .authorization {
   background-color: #3a3a3a;
   flex-direction: column;
