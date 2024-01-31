@@ -582,27 +582,37 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "initializeChatApp", ()=>initializeChatApp);
+parcelHelpers.export(exports, "saveUserAccount", ()=>saveUserAccount);
 var _serverDataJs = require("./constants/server-data.js");
-var _utilsFunctionsJs = require("./utils-functions.js");
 var _uiElementsJs = require("./constants/ui-elements.js");
 var _messagesJs = require("./constants/messages.js");
 var _notificationPopupsJs = require("./users-messages/notification-popups.js");
 var _dataMessagesJs = require("./users-messages/data-messages.js");
 var _renderMessagesJs = require("./users-messages/render-messages.js");
 var _websocketJs = require("./websocket.js");
+var _utilitsJs = require("./authorization/utilits.js");
+var _utilsFunctionsJs = require("./utils-functions.js");
+var _jsCookie = require("js-cookie");
+var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
+async function saveUserAccount() {
+    if ((0, _jsCookieDefault.default).get("userToken")) await initializeChatApp();
+    else (0, _utilitsJs.openAuthorizationModal)();
+}
 async function initializeChatApp() {
-    (0, _utilsFunctionsJs.closeDialog)((0, _uiElementsJs.authorization).modalLogIn);
+    (0, _utilitsJs.closeAuthorizationModals)();
     (0, _notificationPopupsJs.showLoggerMessage)((0, _messagesJs.SUCCESS).ICON, (0, _messagesJs.SUCCESS).AUTHORIZATION, (0, _notificationPopupsJs.POSITION).TOP);
     await (0, _dataMessagesJs.handleGetUsersMessages)();
     (0, _renderMessagesJs.renderMessages)();
     (0, _websocketJs.handleWebsocketConection)();
+    (0, _utilsFunctionsJs.scrollToEnd)();
 }
 
-},{"./constants/server-data.js":"fvwtp","./utils-functions.js":"jvcxR","./constants/ui-elements.js":"bu1WM","./constants/messages.js":"12LYK","./users-messages/notification-popups.js":"jpwwf","./users-messages/data-messages.js":"2Ocsw","./users-messages/render-messages.js":"k7A3p","./websocket.js":"dOSz8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"12LYK":[function(require,module,exports) {
+},{"./constants/server-data.js":"fvwtp","./constants/ui-elements.js":"bu1WM","./constants/messages.js":"12LYK","./users-messages/notification-popups.js":"jpwwf","./users-messages/data-messages.js":"2Ocsw","./users-messages/render-messages.js":"k7A3p","./websocket.js":"dOSz8","./authorization/utilits.js":"13YuS","./utils-functions.js":"jvcxR","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"12LYK":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ERRORS", ()=>ERRORS);
 parcelHelpers.export(exports, "SUCCESS", ()=>SUCCESS);
+parcelHelpers.export(exports, "WEB_SOCKET", ()=>WEB_SOCKET);
 const ERRORS = {
     ICON: "error",
     INVALID_EMAIL: "\u041D\u0435\u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E \u0432\u0432\u0435\u0434\u0435\u043D\u0430 \u043F\u043E\u0447\u0442\u0430!",
@@ -615,6 +625,10 @@ const SUCCESS = {
     MESSAGE_SEND: "\u0422\u043E\u043A\u0435\u043D \u043E\u0442\u043F\u0440\u0430\u0432\u043B\u0435\u043D \u043D\u0430 \u0412\u0430\u0448\u0443 \u043F\u043E\u0447\u0442\u0443!",
     AUTHORIZATION: "\u0410\u0432\u0442\u043E\u0440\u0438\u0437\u0430\u0446\u0438\u044F \u0443\u0441\u043F\u0435\u0448\u043D\u043E \u043F\u0440\u043E\u0439\u0434\u0435\u043D\u0430!",
     CHANGE_NAME: "\u0418\u043C\u044F \u0443\u0441\u043F\u0435\u0448\u043D\u043E \u0438\u0437\u043C\u0435\u043D\u0435\u043D\u043E!"
+};
+const WEB_SOCKET = {
+    CODE_CLOSE_NORMAL: 1000,
+    WORK_ENDED: "\u0440\u0430\u0431\u043E\u0442\u0430 \u0437\u0430\u043A\u043E\u043D\u0447\u0435\u043D\u0430"
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jpwwf":[function(require,module,exports) {
@@ -4476,6 +4490,33 @@ async function handleGetUsersMessages() {
     } else (0, _notificationPopupsJs.showLoggerMessage)((0, _messagesJs.ERRORS).ICON, (0, _messagesJs.ERRORS).NO_MESSAGES, (0, _notificationPopupsJs.POSITION).TOP);
 }
 
-},{"../constants/server-data.js":"fvwtp","../users-messages/notification-popups.js":"jpwwf","../constants/messages.js":"12LYK","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["8F5sj","bDbGG"], "bDbGG", "parcelRequire94c2")
+},{"../constants/server-data.js":"fvwtp","../users-messages/notification-popups.js":"jpwwf","../constants/messages.js":"12LYK","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"13YuS":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "switchToAuthorizarion", ()=>switchToAuthorizarion);
+parcelHelpers.export(exports, "switchToEnterCode", ()=>switchToEnterCode);
+parcelHelpers.export(exports, "openAuthorizationModal", ()=>openAuthorizationModal);
+parcelHelpers.export(exports, "closeAuthorizationModals", ()=>closeAuthorizationModals);
+var _uiElementsJs = require("../constants/ui-elements.js");
+var _utilsFunctionsJs = require("../utils-functions.js");
+function switchToEnterCode() {
+    (0, _uiElementsJs.authorization).modalAuthorization.classList.add("hidden");
+    (0, _uiElementsJs.authorization).modalLogIn.classList.remove("hidden");
+    (0, _utilsFunctionsJs.resetInput)((0, _uiElementsJs.authorization).inputEmail);
+}
+function switchToAuthorizarion() {
+    (0, _uiElementsJs.authorization).modalAuthorization.classList.remove("hidden");
+    (0, _uiElementsJs.authorization).modalLogIn.classList.add("hidden");
+    (0, _utilsFunctionsJs.resetInput)((0, _uiElementsJs.authorization).inputLogIn);
+}
+function openAuthorizationModal() {
+    (0, _uiElementsJs.authorization).modalAuthorization.classList.remove("hidden");
+}
+function closeAuthorizationModals() {
+    (0, _uiElementsJs.authorization).modalAuthorization.classList.add("hidden");
+    (0, _uiElementsJs.authorization).modalLogIn.classList.add("hidden");
+}
+
+},{"../constants/ui-elements.js":"bu1WM","../utils-functions.js":"jvcxR","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["8F5sj","bDbGG"], "bDbGG", "parcelRequire94c2")
 
 //# sourceMappingURL=index.fbb3188c.js.map

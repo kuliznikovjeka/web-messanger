@@ -142,13 +142,13 @@
       this[globalName] = mainExports;
     }
   }
-})({"bnkSD":[function(require,module,exports) {
+})({"aISFB":[function(require,module,exports) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d6ea1d42532a7575";
-module.bundle.HMR_BUNDLE_ID = "67936befe4e506a0";
+module.bundle.HMR_BUNDLE_ID = "8516f6503eb8aa65";
 "use strict";
 /* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
@@ -578,48 +578,94 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
     });
 }
 
-},{}],"dOSz8":[function(require,module,exports) {
+},{}],"hQVQh":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "handleWebsocketConection", ()=>handleWebsocketConection);
-parcelHelpers.export(exports, "socket", ()=>socket);
-var _serverDataJs = require("./constants/server-data.js");
-var _renderMessagesJs = require("./users-messages/render-messages.js");
-var _utilsFunctionsJs = require("./utils-functions.js");
-var _jsCookie = require("js-cookie");
-var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
-let socket;
-function connectToWebsocket() {
-    const token = (0, _jsCookieDefault.default).get("userToken");
-    const url = (0, _serverDataJs.DATA_SERVER).WEB_SOCKET + token;
-    socket = new WebSocket(url);
-    console.log("c\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\u0435 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043E");
-    socket.onclose = ()=>{
-        setTimeout(()=>connectToWebsocket(), 1000);
-        console.log("\u0421\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\u0435 \u0437\u0430\u043A\u0440\u044B\u0442\u043E");
-    };
-    socket.onmessage = (e)=>{
-        const message = JSON.parse(e.data);
-        (0, _renderMessagesJs.renderSingleMessage)(message);
-        (0, _utilsFunctionsJs.scrollToEnd)();
-    };
-}
-function handleWebsocketConection() {
-    const websocketClose = !socket || socket.readyState !== WebSocket.OPEN;
-    if (websocketClose) connectToWebsocket();
-}
+parcelHelpers.export(exports, "startRecord", ()=>startRecord);
+parcelHelpers.export(exports, "endRecord", ()=>endRecord);
+var _uiElementsJs = require("../constants/ui-elements.js");
+const { messageInput, btnMicrophone, formForMessage } = (0, _uiElementsJs.chatElements);
+btnMicrophone.addEventListener("mousedown", startRecord);
+btnMicrophone.addEventListener("mouseup", endRecord);
+const recognition = new webkitSpeechRecognition();
+recognition.lang = "ru-RU";
+recognition.maxAlternatives = 1;
+recognition.interimResults = true;
+recognition.onresult = (e)=>{
+    const textFromRecord = e.results[e.results.length - 1][0].transcript;
+    messageInput.value = textFromRecord;
+};
+console.log(1111);
+const startRecord = ()=>recognition.start();
+const endRecord = ()=>recognition.stop();
 
-},{"./constants/server-data.js":"fvwtp","./users-messages/render-messages.js":"k7A3p","./utils-functions.js":"jvcxR","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fvwtp":[function(require,module,exports) {
+},{"../constants/ui-elements.js":"bu1WM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bu1WM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "DATA_SERVER", ()=>DATA_SERVER);
-const DATA_SERVER = {
-    USER_URL: "https://edu.strada.one/api/user",
-    USER_INFORM: "https://edu.strada.one/api/user/me",
-    MESSAGES: "https://edu.strada.one/api/messages/",
-    WEB_SOCKET: "wss://edu.strada.one/websockets?"
+parcelHelpers.export(exports, "modalElements", ()=>modalElements);
+parcelHelpers.export(exports, "chatElements", ()=>chatElements);
+parcelHelpers.export(exports, "authorization", ()=>authorization);
+const modalElements = {
+    btnSettings: document.querySelector(".top-actions-communication__btn-settings"),
+    modalOverlay: document.querySelector(".modal-overlay"),
+    setingsModal: document.querySelector(".settings-modal"),
+    btnCloseModal: document.querySelector(".top-modal-settings__close"),
+    inputChangeName: document.querySelector("#input-change-name"),
+    formChangeName: document.querySelector("#form-change-name")
+};
+const chatElements = {
+    formForMessage: document.querySelector(".footer-actions-communication__form"),
+    messageInput: document.querySelector(".footer-actions-communication__input"),
+    areaMessanges: document.querySelector(".area-messages__list"),
+    template: document.querySelector("#message"),
+    messageFrom: document.querySelector(".area-messages__send-from"),
+    btnSendMsg: document.querySelector(".footer-actions-communication__btn-send-message"),
+    btnExitChat: document.querySelector(".top-actions-communication__btn-exit"),
+    messageList: document.querySelector(".area-messages__list"),
+    btnMicrophone: document.querySelector(".footer-actions-communication__btn-record-voice")
+};
+const authorization = {
+    modalAuthorization: document.querySelector("#authorization"),
+    modalLogIn: document.querySelector("#log-in"),
+    formAuthorization: document.querySelector("#authorization-form"),
+    formLogIn: document.querySelector("#form-log-in"),
+    inputEmail: document.querySelector("#input-email"),
+    btnEnterCode: document.querySelector("#btn-inter-code"),
+    btn\u0421omeBack: document.querySelector("#btn-come-back"),
+    inputLogIn: document.querySelector("#input-code"),
+    authorizationWrapper: document.querySelector("#authorization-wrapper")
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["bnkSD","dOSz8"], "dOSz8", "parcelRequire94c2")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
-//# sourceMappingURL=index.e4e506a0.js.map
+},{}]},["aISFB","hQVQh"], "hQVQh", "parcelRequire94c2")
+
+//# sourceMappingURL=index.3eb8aa65.js.map

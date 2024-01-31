@@ -588,10 +588,13 @@ var _utilsFunctionsJs = require("./utils-functions.js");
 var _sendMessageJs = require("./user/send-message.js");
 var _renderMessagesJs = require("./users-messages/render-messages.js");
 var _logOutJs = require("./authorization/log-out/log-out.js");
+var _mainJs = require("./main.js");
+var _recordVoiceJs = require("./user/record-voice.js");
+const eventSaveUserAccount = window.addEventListener("load", (0, _mainJs.saveUserAccount));
 const eventOpenModal = (0, _uiElementsJs.modalElements).btnSettings.addEventListener("click", (0, _modalJs.openModal));
 const eventCloseModal = (0, _uiElementsJs.modalElements).modalOverlay.addEventListener("click", (0, _modalJs.closeModal));
 const eventValidateEmptyMessage = (0, _uiElementsJs.chatElements).messageInput.addEventListener("input", (0, _utilsFunctionsJs.validateSendingEmptyMessage));
-const eventSendMessageToUser = (0, _uiElementsJs.chatElements).formForMessage.addEventListener("submit", (0, _sendMessageJs.handleSendMessageSubmit));
+const eventHandleSendMessageSubmit = (0, _uiElementsJs.chatElements).formForMessage.addEventListener("submit", (0, _sendMessageJs.handleSendMessageSubmit));
 const eventGoToEnterCode = (0, _uiElementsJs.authorization).btnEnterCode.addEventListener("click", (0, _utilitsJs.switchToEnterCode));
 const eventGoToEnterBack = (0, _uiElementsJs.authorization).btn\u0421omeBack.addEventListener("click", (0, _utilitsJs.switchToAuthorizarion));
 const eventHandleLogOut = (0, _uiElementsJs.chatElements).btnExitChat.addEventListener("click", (0, _logOutJs.handleLogOutClick));
@@ -599,8 +602,12 @@ const eventSendCodeToUserEmail = (0, _uiElementsJs.authorization).formAuthorizat
 const eventLogInToChat = (0, _uiElementsJs.authorization).formLogIn.addEventListener("submit", (0, _authorizationJs.handleLogInSubmit));
 const eventChangeName = (0, _uiElementsJs.modalElements).formChangeName.addEventListener("submit", (0, _changeNameJs.handleChangeNameSubmit));
 const eventLazyLoad = (0, _uiElementsJs.chatElements).messageList.addEventListener("scroll", (0, _renderMessagesJs.lazyLoadingMessages));
+(0, _uiElementsJs.chatElements).btnMicrophone.addEventListener("mousedown", (0, _recordVoiceJs.startRecord));
+(0, _uiElementsJs.chatElements).btnMicrophone.addEventListener("mouseup", (0, _recordVoiceJs.handleSendMessageByVoice));
+(0, _uiElementsJs.chatElements).btnMicrophone.addEventListener("touchstart", (0, _recordVoiceJs.startRecord));
+(0, _uiElementsJs.chatElements).btnMicrophone.addEventListener("touchend", (0, _recordVoiceJs.handleSendMessageByVoice));
 
-},{"./constants/ui-elements.js":"bu1WM","./user/change-name.js":"hzufp","./authorization/log-in/authorization.js":"5QO6W","./authorization/utilits.js":"13YuS","./modal.js":"guy4I","./utils-functions.js":"jvcxR","./user/send-message.js":"7wAAX","./users-messages/render-messages.js":"k7A3p","./authorization/log-out/log-out.js":"jJuCp"}],"bu1WM":[function(require,module,exports) {
+},{"./constants/ui-elements.js":"bu1WM","./user/change-name.js":"hzufp","./authorization/log-in/authorization.js":"5QO6W","./authorization/utilits.js":"13YuS","./modal.js":"guy4I","./utils-functions.js":"jvcxR","./user/send-message.js":"7wAAX","./users-messages/render-messages.js":"k7A3p","./authorization/log-out/log-out.js":"jJuCp","./main.js":"bDbGG","./user/record-voice.js":"hQVQh"}],"bu1WM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "modalElements", ()=>modalElements);
@@ -622,7 +629,8 @@ const chatElements = {
     messageFrom: document.querySelector(".area-messages__send-from"),
     btnSendMsg: document.querySelector(".footer-actions-communication__btn-send-message"),
     btnExitChat: document.querySelector(".top-actions-communication__btn-exit"),
-    messageList: document.querySelector(".area-messages__list")
+    messageList: document.querySelector(".area-messages__list"),
+    btnMicrophone: document.querySelector(".footer-actions-communication__btn-record-voice")
 };
 const authorization = {
     modalAuthorization: document.querySelector("#authorization"),
@@ -4553,6 +4561,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ERRORS", ()=>ERRORS);
 parcelHelpers.export(exports, "SUCCESS", ()=>SUCCESS);
+parcelHelpers.export(exports, "WEB_SOCKET", ()=>WEB_SOCKET);
 const ERRORS = {
     ICON: "error",
     INVALID_EMAIL: "\u041D\u0435\u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E \u0432\u0432\u0435\u0434\u0435\u043D\u0430 \u043F\u043E\u0447\u0442\u0430!",
@@ -4566,6 +4575,10 @@ const SUCCESS = {
     AUTHORIZATION: "\u0410\u0432\u0442\u043E\u0440\u0438\u0437\u0430\u0446\u0438\u044F \u0443\u0441\u043F\u0435\u0448\u043D\u043E \u043F\u0440\u043E\u0439\u0434\u0435\u043D\u0430!",
     CHANGE_NAME: "\u0418\u043C\u044F \u0443\u0441\u043F\u0435\u0448\u043D\u043E \u0438\u0437\u043C\u0435\u043D\u0435\u043D\u043E!"
 };
+const WEB_SOCKET = {
+    CODE_CLOSE_NORMAL: 1000,
+    WORK_ENDED: "\u0440\u0430\u0431\u043E\u0442\u0430 \u0437\u0430\u043A\u043E\u043D\u0447\u0435\u043D\u0430"
+};
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jvcxR":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -4575,7 +4588,10 @@ parcelHelpers.export(exports, "getTemplateContent", ()=>getTemplateContent);
 parcelHelpers.export(exports, "scrollToEnd", ()=>scrollToEnd);
 parcelHelpers.export(exports, "closeDialog", ()=>closeDialog);
 parcelHelpers.export(exports, "validateSendingEmptyMessage", ()=>validateSendingEmptyMessage);
+parcelHelpers.export(exports, "deleteAllCookies", ()=>deleteAllCookies);
 var _uiElementsJs = require("./constants/ui-elements.js");
+var _jsCookie = require("js-cookie");
+var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
 getLastUserName();
 function getLastUserName() {
     (0, _uiElementsJs.modalElements).inputChangeName.value = localStorage.getItem("user-name");
@@ -4583,9 +4599,6 @@ function getLastUserName() {
 function resetInput(input) {
     const emptyString = "";
     input.value = emptyString;
-}
-function closeDialog(modal) {
-    modal.classList.add("hidden");
 }
 function getTemplateContent() {
     const li = (0, _uiElementsJs.chatElements).template.content.cloneNode(true);
@@ -4604,6 +4617,10 @@ function getTemplateContent() {
 function scrollToEnd() {
     (0, _uiElementsJs.chatElements).areaMessanges.scrollTop = (0, _uiElementsJs.chatElements).areaMessanges.scrollHeight;
 }
+function deleteAllCookies() {
+    const cookies = (0, _jsCookieDefault.default).get();
+    for(const cookie in cookies)if (Object.prototype.hasOwnProperty.call(cookies, cookie)) (0, _jsCookieDefault.default).remove(cookie);
+}
 function validateSendingEmptyMessage() {
     if ((0, _uiElementsJs.chatElements).messageInput.value.trim() === "") {
         (0, _uiElementsJs.chatElements).messageInput.classList.add("border");
@@ -4614,7 +4631,7 @@ function validateSendingEmptyMessage() {
     }
 }
 
-},{"./constants/ui-elements.js":"bu1WM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"c8bBu":[function(require,module,exports) {
+},{"./constants/ui-elements.js":"bu1WM","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"c8bBu":[function(require,module,exports) {
 (function(global, factory) {
     module.exports = factory();
 })(this, function() {
@@ -4715,6 +4732,7 @@ var _utilsFunctionsJs = require("../../utils-functions.js");
 var _notificationPopupsJs = require("../../users-messages/notification-popups.js");
 var _messagesJs = require("../../constants/messages.js");
 var _mainJs = require("../../main.js");
+var _utilitsJs = require("../utilits.js");
 var _jsCookie = require("js-cookie");
 var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
 async function sendTokenToUserEmail() {
@@ -4736,10 +4754,8 @@ async function sendTokenToUserEmail() {
 async function handleSendTokenSubmit(e) {
     e.preventDefault();
     const data = await sendTokenToUserEmail();
-    if (data.response.ok) {
-        (0, _jsCookieDefault.default).set("user-email", data.userEmail);
-        (0, _notificationPopupsJs.showLoggerMessage)((0, _messagesJs.SUCCESS).ICON, (0, _messagesJs.SUCCESS).MESSAGE_SEND, (0, _notificationPopupsJs.POSITION).CENTER);
-    } else (0, _notificationPopupsJs.showLoggerMessage)((0, _messagesJs.ERRORS).ICON, (0, _messagesJs.ERRORS).INVALID_EMAIL, (0, _notificationPopupsJs.POSITION).CENTER);
+    if (data.response.ok) (0, _notificationPopupsJs.showLoggerMessage)((0, _messagesJs.SUCCESS).ICON, (0, _messagesJs.SUCCESS).MESSAGE_SEND, (0, _notificationPopupsJs.POSITION).CENTER);
+    else (0, _notificationPopupsJs.showLoggerMessage)((0, _messagesJs.ERRORS).ICON, (0, _messagesJs.ERRORS).INVALID_EMAIL, (0, _notificationPopupsJs.POSITION).CENTER);
     (0, _utilsFunctionsJs.resetInput)((0, _uiElementsJs.authorization).inputEmail);
 }
 async function logInToChat() {
@@ -4760,33 +4776,44 @@ async function handleLogInSubmit(e) {
     e.preventDefault();
     const data = await logInToChat();
     if (data.response.ok) {
+        const response = await data.response.json();
         (0, _jsCookieDefault.default).set("userToken", data.token);
+        (0, _jsCookieDefault.default).set("user-email", response.email);
         await (0, _mainJs.initializeChatApp)();
     } else (0, _notificationPopupsJs.showLoggerMessage)((0, _messagesJs.ERRORS).ICON, (0, _messagesJs.ERRORS).INVALID_EMAIL, (0, _notificationPopupsJs.POSITION).CENTER);
     (0, _utilsFunctionsJs.resetInput)((0, _uiElementsJs.authorization).inputLogIn);
 }
 
-},{"../../constants/ui-elements.js":"bu1WM","../../constants/server-data.js":"fvwtp","../../utils-functions.js":"jvcxR","../../users-messages/notification-popups.js":"jpwwf","../../constants/messages.js":"12LYK","../../main.js":"bDbGG","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bDbGG":[function(require,module,exports) {
+},{"../../constants/ui-elements.js":"bu1WM","../../constants/server-data.js":"fvwtp","../../utils-functions.js":"jvcxR","../../users-messages/notification-popups.js":"jpwwf","../../constants/messages.js":"12LYK","../../main.js":"bDbGG","../utilits.js":"13YuS","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bDbGG":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "initializeChatApp", ()=>initializeChatApp);
+parcelHelpers.export(exports, "saveUserAccount", ()=>saveUserAccount);
 var _serverDataJs = require("./constants/server-data.js");
-var _utilsFunctionsJs = require("./utils-functions.js");
 var _uiElementsJs = require("./constants/ui-elements.js");
 var _messagesJs = require("./constants/messages.js");
 var _notificationPopupsJs = require("./users-messages/notification-popups.js");
 var _dataMessagesJs = require("./users-messages/data-messages.js");
 var _renderMessagesJs = require("./users-messages/render-messages.js");
 var _websocketJs = require("./websocket.js");
+var _utilitsJs = require("./authorization/utilits.js");
+var _utilsFunctionsJs = require("./utils-functions.js");
+var _jsCookie = require("js-cookie");
+var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
+async function saveUserAccount() {
+    if ((0, _jsCookieDefault.default).get("userToken")) await initializeChatApp();
+    else (0, _utilitsJs.openAuthorizationModal)();
+}
 async function initializeChatApp() {
-    (0, _utilsFunctionsJs.closeDialog)((0, _uiElementsJs.authorization).modalLogIn);
+    (0, _utilitsJs.closeAuthorizationModals)();
     (0, _notificationPopupsJs.showLoggerMessage)((0, _messagesJs.SUCCESS).ICON, (0, _messagesJs.SUCCESS).AUTHORIZATION, (0, _notificationPopupsJs.POSITION).TOP);
     await (0, _dataMessagesJs.handleGetUsersMessages)();
     (0, _renderMessagesJs.renderMessages)();
     (0, _websocketJs.handleWebsocketConection)();
+    (0, _utilsFunctionsJs.scrollToEnd)();
 }
 
-},{"./constants/server-data.js":"fvwtp","./utils-functions.js":"jvcxR","./constants/ui-elements.js":"bu1WM","./constants/messages.js":"12LYK","./users-messages/notification-popups.js":"jpwwf","./users-messages/data-messages.js":"2Ocsw","./users-messages/render-messages.js":"k7A3p","./websocket.js":"dOSz8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2Ocsw":[function(require,module,exports) {
+},{"./constants/server-data.js":"fvwtp","./constants/ui-elements.js":"bu1WM","./constants/messages.js":"12LYK","./users-messages/notification-popups.js":"jpwwf","./users-messages/data-messages.js":"2Ocsw","./users-messages/render-messages.js":"k7A3p","./websocket.js":"dOSz8","./authorization/utilits.js":"13YuS","./utils-functions.js":"jvcxR","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2Ocsw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handleGetUsersMessages", ()=>handleGetUsersMessages);
@@ -4821,24 +4848,35 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "renderMessages", ()=>renderMessages);
 parcelHelpers.export(exports, "renderSingleMessage", ()=>renderSingleMessage);
 parcelHelpers.export(exports, "lazyLoadingMessages", ()=>lazyLoadingMessages);
+parcelHelpers.export(exports, "heighOfTwentyMessages", ()=>heighOfTwentyMessages);
 var _utilsFunctionsJs = require("../utils-functions.js");
 var _uiElementsJs = require("../constants/ui-elements.js");
 var _dateFns = require("date-fns");
 var _jsCookie = require("js-cookie");
 var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
+let heighOfTwentyMessages = null;
 function lazyLoadingMessages() {
-    if ((0, _uiElementsJs.chatElements).messageList.scrollTop === 0) renderMessages();
+    if (heighOfTwentyMessages === null) heighOfTwentyMessages = (0, _uiElementsJs.chatElements).areaMessanges.scrollHeight;
+    if ((0, _uiElementsJs.chatElements).messageList.scrollTop === 0) {
+        renderMessages();
+        (0, _uiElementsJs.chatElements).areaMessanges.scrollTo(0, heighOfTwentyMessages);
+    }
 }
 function renderMessages() {
     const countOfRenderMessages = 19;
     const messages = localStorage.getItem("message-history");
-    const arrayMassages = JSON.parse(messages).reverse();
-    const needToRenderMessages = arrayMassages.slice(arrayMassages.length - countOfRenderMessages);
-    const newArr = arrayMassages.slice(0, arrayMassages.length - countOfRenderMessages);
-    needToRenderMessages.reverse().forEach((message)=>{
-        renderSingleMessage(message, "prepend");
-    });
-    localStorage.setItem("message-history", JSON.stringify(newArr));
+    if (!messages) return;
+    try {
+        const arrayMassages = JSON.parse(messages).reverse();
+        const needToRenderMessages = arrayMassages.slice(arrayMassages.length - countOfRenderMessages);
+        const newArr = arrayMassages.slice(0, arrayMassages.length - countOfRenderMessages);
+        needToRenderMessages.reverse().forEach((message)=>{
+            renderSingleMessage(message, "prepend");
+        });
+        localStorage.setItem("message-history", JSON.stringify(newArr));
+    } catch (error) {
+        console.error("Error parsing messages from localStorage:", error);
+    }
 }
 function renderSingleMessage(message, insertionMethod = "append") {
     const templateContent = (0, _utilsFunctionsJs.getTemplateContent)();
@@ -21855,37 +21893,24 @@ var _utilsFunctionsJs = require("./utils-functions.js");
 var _jsCookie = require("js-cookie");
 var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
 let socket;
-let isReconnecting = false;
 function connectToWebsocket() {
     const token = (0, _jsCookieDefault.default).get("userToken");
     const url = (0, _serverDataJs.DATA_SERVER).WEB_SOCKET + token;
     socket = new WebSocket(url);
-    socket.onopen = ()=>{
-        console.log("C\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\u0435 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043E");
-        isReconnecting = false;
+    console.log("c\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\u0435 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043E");
+    socket.onclose = ()=>{
+        setTimeout(()=>connectToWebsocket(), 1000);
+        console.log("\u0421\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\u0435 \u0437\u0430\u043A\u0440\u044B\u0442\u043E");
     };
-}
-function renderMessageFromSocket() {
     socket.onmessage = (e)=>{
         const message = JSON.parse(e.data);
         (0, _renderMessagesJs.renderSingleMessage)(message);
         (0, _utilsFunctionsJs.scrollToEnd)();
     };
 }
-function reconnectToWebsocket() {
-    const oneSecond = 1000;
-    if (!isReconnecting && (socket.readyState === WebSocket.CLOSED || socket.readyState === WebSocket.CLOSING)) {
-        isReconnecting = true;
-        socket.onclose = ()=>{
-            isReconnecting = false;
-            setTimeout(()=>connectToWebsocket(), oneSecond);
-        };
-    }
-}
 function handleWebsocketConection() {
-    connectToWebsocket();
-    renderMessageFromSocket();
-    reconnectToWebsocket();
+    const websocketClose = !socket || socket.readyState !== WebSocket.OPEN;
+    if (websocketClose) connectToWebsocket();
 }
 
 },{"./constants/server-data.js":"fvwtp","./users-messages/render-messages.js":"k7A3p","./utils-functions.js":"jvcxR","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"13YuS":[function(require,module,exports) {
@@ -21894,6 +21919,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "switchToAuthorizarion", ()=>switchToAuthorizarion);
 parcelHelpers.export(exports, "switchToEnterCode", ()=>switchToEnterCode);
 parcelHelpers.export(exports, "openAuthorizationModal", ()=>openAuthorizationModal);
+parcelHelpers.export(exports, "closeAuthorizationModals", ()=>closeAuthorizationModals);
 var _uiElementsJs = require("../constants/ui-elements.js");
 var _utilsFunctionsJs = require("../utils-functions.js");
 function switchToEnterCode() {
@@ -21908,6 +21934,10 @@ function switchToAuthorizarion() {
 }
 function openAuthorizationModal() {
     (0, _uiElementsJs.authorization).modalAuthorization.classList.remove("hidden");
+}
+function closeAuthorizationModals() {
+    (0, _uiElementsJs.authorization).modalAuthorization.classList.add("hidden");
+    (0, _uiElementsJs.authorization).modalLogIn.classList.add("hidden");
 }
 
 },{"../constants/ui-elements.js":"bu1WM","../utils-functions.js":"jvcxR","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"guy4I":[function(require,module,exports) {
@@ -21957,13 +21987,45 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handleLogOutClick", ()=>handleLogOutClick);
 var _utilitsJs = require("../utilits.js");
-var _jsCookie = require("js-cookie");
-var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
-function handleLogOutClick(e) {
+var _utilsFunctionsJs = require("../../utils-functions.js");
+var _uiElementsJs = require("../../constants/ui-elements.js");
+var _messagesJs = require("../../constants/messages.js");
+var _websocketJs = require("../../websocket.js");
+var _renderMessagesJs = require("../../users-messages/render-messages.js");
+const { CODE_CLOSE_NORMAL, WORK_ENDED } = (0, _messagesJs.WEB_SOCKET);
+const websocketOpen = (0, _websocketJs.socket) && (0, _websocketJs.socket).readyState === WebSocket.OPEN;
+function handleLogOutClick() {
     (0, _utilitsJs.openAuthorizationModal)();
-    (0, _jsCookieDefault.default).remove("userToken");
+    if (websocketOpen) (0, _websocketJs.socket).close(CODE_CLOSE_NORMAL, WORK_ENDED);
+    (0, _utilsFunctionsJs.deleteAllCookies)();
+    localStorage.clear();
+    (0, _uiElementsJs.chatElements).areaMessanges.replaceChildren();
+    heighOfTwentyMessages = null;
 }
 
-},{"../utilits.js":"13YuS","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["cVZrN","lMT80"], "lMT80", "parcelRequire94c2")
+},{"../utilits.js":"13YuS","../../utils-functions.js":"jvcxR","../../constants/ui-elements.js":"bu1WM","../../constants/messages.js":"12LYK","../../websocket.js":"dOSz8","../../users-messages/render-messages.js":"k7A3p","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hQVQh":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "startRecord", ()=>startRecord);
+parcelHelpers.export(exports, "handleSendMessageByVoice", ()=>handleSendMessageByVoice);
+var _uiElementsJs = require("../constants/ui-elements.js");
+var _sendMessageJs = require("./send-message.js");
+const { messageInput } = (0, _uiElementsJs.chatElements);
+const recognition = new webkitSpeechRecognition();
+recognition.lang = "ru-RU";
+recognition.maxAlternatives = 1;
+recognition.interimResults = true;
+recognition.onresult = (e)=>{
+    const textFromRecord = e.results[e.results.length - 1][0].transcript;
+    messageInput.value = textFromRecord;
+};
+const startRecord = ()=>recognition.start();
+const endRecord = ()=>recognition.stop();
+const handleSendMessageByVoice = (e)=>{
+    endRecord();
+    (0, _sendMessageJs.handleSendMessageSubmit)(e);
+};
+
+},{"../constants/ui-elements.js":"bu1WM","./send-message.js":"7wAAX","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["cVZrN","lMT80"], "lMT80", "parcelRequire94c2")
 
 //# sourceMappingURL=index.2a7c2198.js.map

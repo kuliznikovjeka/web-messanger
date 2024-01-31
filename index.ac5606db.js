@@ -584,24 +584,35 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "renderMessages", ()=>renderMessages);
 parcelHelpers.export(exports, "renderSingleMessage", ()=>renderSingleMessage);
 parcelHelpers.export(exports, "lazyLoadingMessages", ()=>lazyLoadingMessages);
+parcelHelpers.export(exports, "heighOfTwentyMessages", ()=>heighOfTwentyMessages);
 var _utilsFunctionsJs = require("../utils-functions.js");
 var _uiElementsJs = require("../constants/ui-elements.js");
 var _dateFns = require("date-fns");
 var _jsCookie = require("js-cookie");
 var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
+let heighOfTwentyMessages = null;
 function lazyLoadingMessages() {
-    if ((0, _uiElementsJs.chatElements).messageList.scrollTop === 0) renderMessages();
+    if (heighOfTwentyMessages === null) heighOfTwentyMessages = (0, _uiElementsJs.chatElements).areaMessanges.scrollHeight;
+    if ((0, _uiElementsJs.chatElements).messageList.scrollTop === 0) {
+        renderMessages();
+        (0, _uiElementsJs.chatElements).areaMessanges.scrollTo(0, heighOfTwentyMessages);
+    }
 }
 function renderMessages() {
     const countOfRenderMessages = 19;
     const messages = localStorage.getItem("message-history");
-    const arrayMassages = JSON.parse(messages).reverse();
-    const needToRenderMessages = arrayMassages.slice(arrayMassages.length - countOfRenderMessages);
-    const newArr = arrayMassages.slice(0, arrayMassages.length - countOfRenderMessages);
-    needToRenderMessages.reverse().forEach((message)=>{
-        renderSingleMessage(message, "prepend");
-    });
-    localStorage.setItem("message-history", JSON.stringify(newArr));
+    if (!messages) return;
+    try {
+        const arrayMassages = JSON.parse(messages).reverse();
+        const needToRenderMessages = arrayMassages.slice(arrayMassages.length - countOfRenderMessages);
+        const newArr = arrayMassages.slice(0, arrayMassages.length - countOfRenderMessages);
+        needToRenderMessages.reverse().forEach((message)=>{
+            renderSingleMessage(message, "prepend");
+        });
+        localStorage.setItem("message-history", JSON.stringify(newArr));
+    } catch (error) {
+        console.error("Error parsing messages from localStorage:", error);
+    }
 }
 function renderSingleMessage(message, insertionMethod = "append") {
     const templateContent = (0, _utilsFunctionsJs.getTemplateContent)();
@@ -624,7 +635,10 @@ parcelHelpers.export(exports, "getTemplateContent", ()=>getTemplateContent);
 parcelHelpers.export(exports, "scrollToEnd", ()=>scrollToEnd);
 parcelHelpers.export(exports, "closeDialog", ()=>closeDialog);
 parcelHelpers.export(exports, "validateSendingEmptyMessage", ()=>validateSendingEmptyMessage);
+parcelHelpers.export(exports, "deleteAllCookies", ()=>deleteAllCookies);
 var _uiElementsJs = require("./constants/ui-elements.js");
+var _jsCookie = require("js-cookie");
+var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
 getLastUserName();
 function getLastUserName() {
     (0, _uiElementsJs.modalElements).inputChangeName.value = localStorage.getItem("user-name");
@@ -632,9 +646,6 @@ function getLastUserName() {
 function resetInput(input) {
     const emptyString = "";
     input.value = emptyString;
-}
-function closeDialog(modal) {
-    modal.classList.add("hidden");
 }
 function getTemplateContent() {
     const li = (0, _uiElementsJs.chatElements).template.content.cloneNode(true);
@@ -653,6 +664,10 @@ function getTemplateContent() {
 function scrollToEnd() {
     (0, _uiElementsJs.chatElements).areaMessanges.scrollTop = (0, _uiElementsJs.chatElements).areaMessanges.scrollHeight;
 }
+function deleteAllCookies() {
+    const cookies = (0, _jsCookieDefault.default).get();
+    for(const cookie in cookies)if (Object.prototype.hasOwnProperty.call(cookies, cookie)) (0, _jsCookieDefault.default).remove(cookie);
+}
 function validateSendingEmptyMessage() {
     if ((0, _uiElementsJs.chatElements).messageInput.value.trim() === "") {
         (0, _uiElementsJs.chatElements).messageInput.classList.add("border");
@@ -663,7 +678,7 @@ function validateSendingEmptyMessage() {
     }
 }
 
-},{"./constants/ui-elements.js":"bu1WM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bu1WM":[function(require,module,exports) {
+},{"./constants/ui-elements.js":"bu1WM","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bu1WM":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "modalElements", ()=>modalElements);
@@ -685,7 +700,8 @@ const chatElements = {
     messageFrom: document.querySelector(".area-messages__send-from"),
     btnSendMsg: document.querySelector(".footer-actions-communication__btn-send-message"),
     btnExitChat: document.querySelector(".top-actions-communication__btn-exit"),
-    messageList: document.querySelector(".area-messages__list")
+    messageList: document.querySelector(".area-messages__list"),
+    btnMicrophone: document.querySelector(".footer-actions-communication__btn-record-voice")
 };
 const authorization = {
     modalAuthorization: document.querySelector("#authorization"),
@@ -728,6 +744,96 @@ exports.export = function(dest, destName, get) {
         get: get
     });
 };
+
+},{}],"c8bBu":[function(require,module,exports) {
+(function(global, factory) {
+    module.exports = factory();
+})(this, function() {
+    "use strict";
+    /* eslint-disable no-var */ function assign(target) {
+        for(var i = 1; i < arguments.length; i++){
+            var source = arguments[i];
+            for(var key in source)target[key] = source[key];
+        }
+        return target;
+    }
+    /* eslint-enable no-var */ /* eslint-disable no-var */ var defaultConverter = {
+        read: function(value) {
+            if (value[0] === '"') value = value.slice(1, -1);
+            return value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent);
+        },
+        write: function(value) {
+            return encodeURIComponent(value).replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g, decodeURIComponent);
+        }
+    };
+    /* eslint-enable no-var */ /* eslint-disable no-var */ function init(converter, defaultAttributes) {
+        function set(name, value, attributes) {
+            if (typeof document === "undefined") return;
+            attributes = assign({}, defaultAttributes, attributes);
+            if (typeof attributes.expires === "number") attributes.expires = new Date(Date.now() + attributes.expires * 864e5);
+            if (attributes.expires) attributes.expires = attributes.expires.toUTCString();
+            name = encodeURIComponent(name).replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent).replace(/[()]/g, escape);
+            var stringifiedAttributes = "";
+            for(var attributeName in attributes){
+                if (!attributes[attributeName]) continue;
+                stringifiedAttributes += "; " + attributeName;
+                if (attributes[attributeName] === true) continue;
+                // Considers RFC 6265 section 5.2:
+                // ...
+                // 3.  If the remaining unparsed-attributes contains a %x3B (";")
+                //     character:
+                // Consume the characters of the unparsed-attributes up to,
+                // not including, the first %x3B (";") character.
+                // ...
+                stringifiedAttributes += "=" + attributes[attributeName].split(";")[0];
+            }
+            return document.cookie = name + "=" + converter.write(value, name) + stringifiedAttributes;
+        }
+        function get(name) {
+            if (typeof document === "undefined" || arguments.length && !name) return;
+            // To prevent the for loop in the first place assign an empty array
+            // in case there are no cookies at all.
+            var cookies = document.cookie ? document.cookie.split("; ") : [];
+            var jar = {};
+            for(var i = 0; i < cookies.length; i++){
+                var parts = cookies[i].split("=");
+                var value = parts.slice(1).join("=");
+                try {
+                    var found = decodeURIComponent(parts[0]);
+                    jar[found] = converter.read(value, found);
+                    if (name === found) break;
+                } catch (e) {}
+            }
+            return name ? jar[name] : jar;
+        }
+        return Object.create({
+            set,
+            get,
+            remove: function(name, attributes) {
+                set(name, "", assign({}, attributes, {
+                    expires: -1
+                }));
+            },
+            withAttributes: function(attributes) {
+                return init(this.converter, assign({}, this.attributes, attributes));
+            },
+            withConverter: function(converter) {
+                return init(assign({}, this.converter, converter), this.attributes);
+            }
+        }, {
+            attributes: {
+                value: Object.freeze(defaultAttributes)
+            },
+            converter: {
+                value: Object.freeze(converter)
+            }
+        });
+    }
+    var api = init(defaultConverter, {
+        path: "/"
+    });
+    /* eslint-enable no-var */ return api;
+});
 
 },{}],"dU215":[function(require,module,exports) {
 "use strict";
@@ -17720,96 +17826,6 @@ var _index = require("387b0aecfe84b867");
     return Math.trunc(years * _index.quartersInYear);
 }
 
-},{"387b0aecfe84b867":"1vXXw"}],"c8bBu":[function(require,module,exports) {
-(function(global, factory) {
-    module.exports = factory();
-})(this, function() {
-    "use strict";
-    /* eslint-disable no-var */ function assign(target) {
-        for(var i = 1; i < arguments.length; i++){
-            var source = arguments[i];
-            for(var key in source)target[key] = source[key];
-        }
-        return target;
-    }
-    /* eslint-enable no-var */ /* eslint-disable no-var */ var defaultConverter = {
-        read: function(value) {
-            if (value[0] === '"') value = value.slice(1, -1);
-            return value.replace(/(%[\dA-F]{2})+/gi, decodeURIComponent);
-        },
-        write: function(value) {
-            return encodeURIComponent(value).replace(/%(2[346BF]|3[AC-F]|40|5[BDE]|60|7[BCD])/g, decodeURIComponent);
-        }
-    };
-    /* eslint-enable no-var */ /* eslint-disable no-var */ function init(converter, defaultAttributes) {
-        function set(name, value, attributes) {
-            if (typeof document === "undefined") return;
-            attributes = assign({}, defaultAttributes, attributes);
-            if (typeof attributes.expires === "number") attributes.expires = new Date(Date.now() + attributes.expires * 864e5);
-            if (attributes.expires) attributes.expires = attributes.expires.toUTCString();
-            name = encodeURIComponent(name).replace(/%(2[346B]|5E|60|7C)/g, decodeURIComponent).replace(/[()]/g, escape);
-            var stringifiedAttributes = "";
-            for(var attributeName in attributes){
-                if (!attributes[attributeName]) continue;
-                stringifiedAttributes += "; " + attributeName;
-                if (attributes[attributeName] === true) continue;
-                // Considers RFC 6265 section 5.2:
-                // ...
-                // 3.  If the remaining unparsed-attributes contains a %x3B (";")
-                //     character:
-                // Consume the characters of the unparsed-attributes up to,
-                // not including, the first %x3B (";") character.
-                // ...
-                stringifiedAttributes += "=" + attributes[attributeName].split(";")[0];
-            }
-            return document.cookie = name + "=" + converter.write(value, name) + stringifiedAttributes;
-        }
-        function get(name) {
-            if (typeof document === "undefined" || arguments.length && !name) return;
-            // To prevent the for loop in the first place assign an empty array
-            // in case there are no cookies at all.
-            var cookies = document.cookie ? document.cookie.split("; ") : [];
-            var jar = {};
-            for(var i = 0; i < cookies.length; i++){
-                var parts = cookies[i].split("=");
-                var value = parts.slice(1).join("=");
-                try {
-                    var found = decodeURIComponent(parts[0]);
-                    jar[found] = converter.read(value, found);
-                    if (name === found) break;
-                } catch (e) {}
-            }
-            return name ? jar[name] : jar;
-        }
-        return Object.create({
-            set,
-            get,
-            remove: function(name, attributes) {
-                set(name, "", assign({}, attributes, {
-                    expires: -1
-                }));
-            },
-            withAttributes: function(attributes) {
-                return init(this.converter, assign({}, this.attributes, attributes));
-            },
-            withConverter: function(converter) {
-                return init(assign({}, this.converter, converter), this.attributes);
-            }
-        }, {
-            attributes: {
-                value: Object.freeze(defaultAttributes)
-            },
-            converter: {
-                value: Object.freeze(converter)
-            }
-        });
-    }
-    var api = init(defaultConverter, {
-        path: "/"
-    });
-    /* eslint-enable no-var */ return api;
-});
-
-},{}]},["3K9xb","k7A3p"], "k7A3p", "parcelRequire94c2")
+},{"387b0aecfe84b867":"1vXXw"}]},["3K9xb","k7A3p"], "k7A3p", "parcelRequire94c2")
 
 //# sourceMappingURL=index.ac5606db.js.map

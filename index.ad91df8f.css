@@ -484,14 +484,8 @@ body {
   font-size: 16px;
 }
 
-.footer-actions-communication__input.border {
-  border-radius: 6px;
-  padding-right: 8px;
-}
-
 .footer-actions-communication__btn-send-message {
   background: #fff;
-  border-radius: 0 6px 6px 0;
   padding: 8px;
   display: block;
 }
@@ -510,6 +504,30 @@ body {
 
 .footer-actions-communication__btn-send-message.hide {
   display: none;
+}
+
+.footer-actions-communication__btn-record-voice {
+  background: #fff;
+  border-left: 2px solid #5555551a;
+  border-radius: 0 6px 6px 0;
+  padding: 8px;
+  display: block;
+}
+
+.footer-actions-communication__btn-record-voice img {
+  width: 24px;
+  height: 24px;
+  transition: transform .3s, -webkit-transform .3s;
+}
+
+@media (any-hover: hover) {
+  .footer-actions-communication__btn-record-voice img:hover {
+    transform: scale(1.1);
+  }
+}
+
+.footer-actions-communication__btn-record-voice img:active {
+  transform: scale(1.5);
 }
 
 /*# sourceMappingURL=index.ad91df8f.css.map */

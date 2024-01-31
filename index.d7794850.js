@@ -142,13 +142,13 @@
       this[globalName] = mainExports;
     }
   }
-})({"bnkSD":[function(require,module,exports) {
+})({"82AG4":[function(require,module,exports) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d6ea1d42532a7575";
-module.bundle.HMR_BUNDLE_ID = "67936befe4e506a0";
+module.bundle.HMR_BUNDLE_ID = "ebbd311dd7794850";
 "use strict";
 /* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, chrome, browser, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
@@ -578,48 +578,51 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
     });
 }
 
-},{}],"dOSz8":[function(require,module,exports) {
+},{}],"hQVQh":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "handleWebsocketConection", ()=>handleWebsocketConection);
-parcelHelpers.export(exports, "socket", ()=>socket);
-var _serverDataJs = require("./constants/server-data.js");
-var _renderMessagesJs = require("./users-messages/render-messages.js");
-var _utilsFunctionsJs = require("./utils-functions.js");
-var _jsCookie = require("js-cookie");
-var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
-let socket;
-function connectToWebsocket() {
-    const token = (0, _jsCookieDefault.default).get("userToken");
-    const url = (0, _serverDataJs.DATA_SERVER).WEB_SOCKET + token;
-    socket = new WebSocket(url);
-    console.log("c\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\u0435 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043E");
-    socket.onclose = ()=>{
-        setTimeout(()=>connectToWebsocket(), 1000);
-        console.log("\u0421\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\u0435 \u0437\u0430\u043A\u0440\u044B\u0442\u043E");
-    };
-    socket.onmessage = (e)=>{
-        const message = JSON.parse(e.data);
-        (0, _renderMessagesJs.renderSingleMessage)(message);
-        (0, _utilsFunctionsJs.scrollToEnd)();
-    };
-}
-function handleWebsocketConection() {
-    const websocketClose = !socket || socket.readyState !== WebSocket.OPEN;
-    if (websocketClose) connectToWebsocket();
-}
-
-},{"./constants/server-data.js":"fvwtp","./users-messages/render-messages.js":"k7A3p","./utils-functions.js":"jvcxR","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fvwtp":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "DATA_SERVER", ()=>DATA_SERVER);
-const DATA_SERVER = {
-    USER_URL: "https://edu.strada.one/api/user",
-    USER_INFORM: "https://edu.strada.one/api/user/me",
-    MESSAGES: "https://edu.strada.one/api/messages/",
-    WEB_SOCKET: "wss://edu.strada.one/websockets?"
+parcelHelpers.export(exports, "startRecord", ()=>startRecord);
+parcelHelpers.export(exports, "handleSendMessageByVoice", ()=>handleSendMessageByVoice);
+var _uiElementsJs = require("../constants/ui-elements.js");
+var _sendMessageJs = require("./send-message.js");
+const { messageInput } = (0, _uiElementsJs.chatElements);
+const recognition = new webkitSpeechRecognition();
+recognition.lang = "ru-RU";
+recognition.maxAlternatives = 1;
+recognition.interimResults = true;
+recognition.onresult = (e)=>{
+    const textFromRecord = e.results[e.results.length - 1][0].transcript;
+    messageInput.value = textFromRecord;
+};
+const startRecord = ()=>recognition.start();
+const endRecord = ()=>recognition.stop();
+const handleSendMessageByVoice = (e)=>{
+    endRecord();
+    (0, _sendMessageJs.handleSendMessageSubmit)(e);
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["bnkSD","dOSz8"], "dOSz8", "parcelRequire94c2")
+},{"../constants/ui-elements.js":"bu1WM","./send-message.js":"7wAAX","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7wAAX":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "handleSendMessageSubmit", ()=>handleSendMessageSubmit);
+var _utilsFunctionsJs = require("../utils-functions.js");
+var _uiElementsJs = require("../constants/ui-elements.js");
+var _websocketJs = require("../websocket.js");
+function sendMessage() {
+    const message = (0, _uiElementsJs.chatElements).messageInput.value;
+    if (!message) return;
+    (0, _websocketJs.socket).send(JSON.stringify({
+        text: message
+    }));
+}
+function handleSendMessageSubmit(e) {
+    e.preventDefault();
+    sendMessage();
+    (0, _utilsFunctionsJs.resetInput)((0, _uiElementsJs.chatElements).messageInput);
+    (0, _utilsFunctionsJs.validateSendingEmptyMessage)();
+    (0, _utilsFunctionsJs.scrollToEnd)();
+}
 
-//# sourceMappingURL=index.e4e506a0.js.map
+},{"../utils-functions.js":"jvcxR","../constants/ui-elements.js":"bu1WM","../websocket.js":"dOSz8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["82AG4","hQVQh"], "hQVQh", "parcelRequire94c2")
+
+//# sourceMappingURL=index.d7794850.js.map
