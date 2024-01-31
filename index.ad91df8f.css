@@ -514,20 +514,18 @@ body {
   display: block;
 }
 
-.footer-actions-communication__btn-record-voice img {
-  width: 24px;
-  height: 24px;
+.footer-actions-communication__btn-record-voice svg {
   transition: transform .3s, -webkit-transform .3s;
 }
 
 @media (any-hover: hover) {
-  .footer-actions-communication__btn-record-voice img:hover {
+  .footer-actions-communication__btn-record-voice svg:hover {
     transform: scale(1.1);
   }
 }
 
-.footer-actions-communication__btn-record-voice img:active {
-  transform: scale(1.5);
+.footer-actions-communication__btn-record-voice svg:active {
+  transform: scale(1.4);
 }
 
 /*# sourceMappingURL=index.ad91df8f.css.map */
