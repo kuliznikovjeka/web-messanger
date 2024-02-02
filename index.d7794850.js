@@ -585,7 +585,6 @@ parcelHelpers.export(exports, "startRecord", ()=>startRecord);
 parcelHelpers.export(exports, "handleSendMessageByVoice", ()=>handleSendMessageByVoice);
 var _uiElementsJs = require("../constants/ui-elements.js");
 var _sendMessageJs = require("./send-message.js");
-var _utilsFunctionsJs = require("../utils-functions.js");
 const { messageInput } = (0, _uiElementsJs.chatElements);
 const recognition = new webkitSpeechRecognition();
 recognition.lang = "ru-RU";
@@ -600,10 +599,9 @@ const endRecord = ()=>recognition.stop();
 const handleSendMessageByVoice = (e)=>{
     endRecord();
     (0, _sendMessageJs.handleSendMessageSubmit)(e);
-    (0, _utilsFunctionsJs.resetInput)(messageInput);
 };
 
-},{"../constants/ui-elements.js":"bu1WM","./send-message.js":"7wAAX","../utils-functions.js":"jvcxR","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7wAAX":[function(require,module,exports) {
+},{"../constants/ui-elements.js":"bu1WM","./send-message.js":"7wAAX","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7wAAX":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handleSendMessageSubmit", ()=>handleSendMessageSubmit);
