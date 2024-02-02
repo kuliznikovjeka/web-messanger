@@ -618,7 +618,7 @@ function sendMessage() {
 function handleSendMessageSubmit(e) {
     e.preventDefault();
     sendMessage();
-    (0, _utilsFunctionsJs.resetInput)((0, _uiElementsJs.chatElements).messageInput);
+    (0, _uiElementsJs.chatElements).formForMessage.reset();
     (0, _utilsFunctionsJs.validateSendingEmptyMessage)();
     (0, _utilsFunctionsJs.scrollToEnd)();
 }
