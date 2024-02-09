@@ -611,9 +611,13 @@ var _websocketJs = require("../websocket.js");
 function sendMessage() {
     const message = (0, _uiElementsJs.chatElements).messageInput.value;
     if (!message) return;
-    (0, _websocketJs.socket).send(JSON.stringify({
-        text: message
-    }));
+    try {
+        (0, _websocketJs.socket).send(JSON.stringify({
+            text: message
+        }));
+    } catch (err) {
+        console.error(err);
+    }
 }
 function handleSendMessageSubmit(e) {
     e.preventDefault();

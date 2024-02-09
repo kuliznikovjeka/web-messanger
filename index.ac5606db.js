@@ -630,22 +630,16 @@ function renderSingleMessage(message, insertionMethod = "append") {
 },{"../utils-functions.js":"jvcxR","../constants/ui-elements.js":"bu1WM","date-fns":"dU215","js-cookie":"c8bBu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jvcxR":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "resetInput", ()=>resetInput);
 parcelHelpers.export(exports, "getTemplateContent", ()=>getTemplateContent);
+parcelHelpers.export(exports, "getLastUserName", ()=>getLastUserName);
 parcelHelpers.export(exports, "scrollToEnd", ()=>scrollToEnd);
-parcelHelpers.export(exports, "closeDialog", ()=>closeDialog);
 parcelHelpers.export(exports, "validateSendingEmptyMessage", ()=>validateSendingEmptyMessage);
 parcelHelpers.export(exports, "deleteAllCookies", ()=>deleteAllCookies);
 var _uiElementsJs = require("./constants/ui-elements.js");
 var _jsCookie = require("js-cookie");
 var _jsCookieDefault = parcelHelpers.interopDefault(_jsCookie);
-getLastUserName();
 function getLastUserName() {
-    (0, _uiElementsJs.modalElements).inputChangeName.value = localStorage.getItem("user-name");
-}
-function resetInput(input) {
-    const emptyString = "";
-    input.value = emptyString;
+    if (localStorage.getItem("user-name")) (0, _uiElementsJs.modalElements).inputChangeName.value = localStorage.getItem("user-name");
 }
 function getTemplateContent() {
     const li = (0, _uiElementsJs.chatElements).template.content.cloneNode(true);
